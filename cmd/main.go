@@ -1,62 +1,49 @@
 package main
 
 import (
+	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Snippet struct {
-	ID          string
-	Name        string
-	Description string
-	Author      string
+	ID      int
+	Title   string
+	Content string
 }
 
-func getSnippetListController(c *gin.Context) {
-
-	s1 := Snippet{"1", "It's my snippet", "I've just created first snippet in that app!", "Maxim"}
-	s2 := Snippet{"2", "Quality", "Quality is not an act, it is a habit.", "Aristotle"}
-	s3 := Snippet{"3", "Safety", "Safety is important", "Anonymous"}
-
-	array := []Snippet{s1, s2, s3}
-
-	c.JSON(http.StatusOK, array)
+var snippets = []Snippet{
+	{ID: 1, Title: "First Snippet", Content: "This is the first snippet."},
+	{ID: 2, Title: "Second Snippet", Content: "This is the second snippet."},
+	{ID: 3, Title: "Third Snippet", Content: "This is the third snippet."},
 }
 
-func getSnippetController(c *gin.Context) {
-
-	s1 := Snippet{"1", "It's my snippet", "I've just created first snippet in that app!", "Maxim"}
-	s2 := Snippet{"2", "Quality", "Quality is not an act, it is a habit.", "Aristotle"}
-	s3 := Snippet{"3", "Safety", "Safety is important", "Anonymous"}
-
-	array := []Snippet{s1, s2, s3}
-
-	id := c.Param("id")
-	found := false
-
-	for _, snippet := range array {
-		if id == snippet.ID {
-			c.JSON(http.StatusOK, snippet)
-			found = true
-			break
+func getSnippetByID(id string) (Snippet, error) {
+	for _, snippet := range snippets {
+		if strconv.Itoa(snippet.ID) == id {
+			return snippet, nil
 		}
 	}
-	if !found {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Not found"})
-	}
-}
 
-func helloController(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Hello, it's my snippet application!",
-	})
+	return Snippet{}, errors.New("Snippet not found")
 }
 
 func main() {
 	router := gin.Default()
-	router.GET("/api", helloController)
-	router.GET("/api/snippet", getSnippetListController)
-	router.GET("/api/snippet/:id", getSnippetController)
+
+	router.GET("/api/snippet/:id", func(c *gin.Context) {
+		id := c.Param("id")
+
+		snippet, err := getSnippetByID(id)
+		if err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Snippet not found"})
+			return
+		}
+
+		c.JSON(http.StatusOK, snippet)
+	})
+
 	router.Run("localhost:8080")
 }
