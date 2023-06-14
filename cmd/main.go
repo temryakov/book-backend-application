@@ -2,35 +2,42 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Snippet struct {
-	ID      int
-	Title   string
-	Content string
+	Title string
+	Text  string
+	gorm.Model
 }
 
-var snippets = []Snippet{
-	{ID: 1, Title: "First Snippet", Content: "This is the first snippet."},
-	{ID: 2, Title: "Second Snippet", Content: "This is the second snippet."},
-	{ID: 3, Title: "Third Snippet", Content: "This is the third snippet."},
-}
+// Loading enviroment variables
+var dbHost = viperEnvVariable("DBHOST")
+var dbPort = viperEnvVariable("DBPORT")
+var dbUser = viperEnvVariable("DBUSER")
+var dbName = viperEnvVariable("DBNAME")
+
+var dsn = fmt.Sprintf("host=%s user=%s password=abc123 dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", dbHost, dbUser, dbName, dbPort)
+var db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 func getSnippetByID(id string) (Snippet, error) {
 
-	for _, snippet := range snippets {
-		if strconv.Itoa(snippet.ID) == id {
-			return snippet, nil
-		}
+	var snippet Snippet
+
+	err := db.First(&snippet, id).Error
+
+	if err != nil {
+		return snippet, errors.New("Snippet not found")
 	}
 
-	return Snippet{}, errors.New("Snippet not found")
+	return snippet, nil
 }
 
 func viperEnvVariable(key string) string {
@@ -51,6 +58,9 @@ func viperEnvVariable(key string) string {
 }
 
 func main() {
+
+	serverAddress := viperEnvVariable("SERVER_ADDRESS")
+
 	router := gin.Default()
 
 	router.GET("/api/snippet/:id", func(c *gin.Context) {
@@ -64,8 +74,5 @@ func main() {
 
 		c.JSON(http.StatusOK, snippet)
 	})
-
-	serverAddress := viperEnvVariable("SERVER_ADDRESS")
-
 	router.Run(serverAddress)
 }
