@@ -3,11 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 
+	"snippetapp/bootstrap"
+
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -19,18 +19,16 @@ type Snippet struct {
 }
 
 // Loading enviroment variables
-var dbHost = viperEnvVariable("DBHOST")
-var dbPort = viperEnvVariable("DBPORT")
-var dbUser = viperEnvVariable("DBUSER")
-var dbName = viperEnvVariable("DBNAME")
 
-var dsn = fmt.Sprintf("host=%s user=%s password=abc123 dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", dbHost, dbUser, dbName, dbPort)
-var db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+var dsn = fmt.Sprintf("host=%s user=%s password=abc123 dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", DBHost, DBUser, DBName, DBPort)
+var db, dbErr = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 func getSnippetByID(id string) (Snippet, error) {
-
 	var snippet Snippet
 
+	if dbErr != nil {
+		return snippet, errors.New("wtf error within db")
+	}
 	err := db.First(&snippet, id).Error
 
 	if err != nil {
@@ -40,39 +38,22 @@ func getSnippetByID(id string) (Snippet, error) {
 	return snippet, nil
 }
 
-func viperEnvVariable(key string) string {
-	viper.SetConfigFile(".env")
-
-	err := viper.ReadInConfig()
-
+func getSnippetController(c *gin.Context) {
+	snippet, err := getSnippetByID(c.Param("id"))
 	if err != nil {
-		log.Fatalf("Error while reading config file %s", err)
+		c.JSON(http.StatusNotFound, gin.H{"error": "Snippet not found"})
+		return
 	}
-	value, ok := viper.Get(key).(string)
-
-	if !ok {
-		log.Fatalf("Invalid type assertion")
-	}
-
-	return value
+	c.JSON(http.StatusOK, snippet)
 }
 
 func main() {
+	app := bootstrap.App()
 
-	serverAddress := viperEnvVariable("SERVER_ADDRESS")
+	env := app.Env
 
 	router := gin.Default()
 
-	router.GET("/api/snippet/:id", func(c *gin.Context) {
-		id := c.Param("id")
-
-		snippet, err := getSnippetByID(id)
-		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Snippet not found"})
-			return
-		}
-
-		c.JSON(http.StatusOK, snippet)
-	})
-	router.Run(serverAddress)
+	router.GET("/api/snippet/:id", getSnippetController)
+	router.Run(env.ServerAddress)
 }
