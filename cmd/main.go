@@ -18,12 +18,13 @@ type Snippet struct {
 	gorm.Model
 }
 
-// Loading enviroment variables
-
-var dsn = fmt.Sprintf("host=%s user=%s password=abc123 dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", DBHost, DBUser, DBName, DBPort)
-var db, dbErr = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+var app = bootstrap.App()
+var env = app.Env
 
 func getSnippetByID(id string) (Snippet, error) {
+	var dsn = fmt.Sprintf("host=%s user=%s password=abc123 dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", env.DBHost, env.DBUser, env.DBName, env.DBPort)
+	var db, dbErr = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
 	var snippet Snippet
 
 	if dbErr != nil {
@@ -48,12 +49,9 @@ func getSnippetController(c *gin.Context) {
 }
 
 func main() {
-	app := bootstrap.App()
 
-	env := app.Env
+	gin := gin.Default()
 
-	router := gin.Default()
-
-	router.GET("/api/snippet/:id", getSnippetController)
-	router.Run(env.ServerAddress)
+	gin.GET("/api/snippet/:id", getSnippetController)
+	gin.Run(env.ServerAddress)
 }

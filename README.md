@@ -1,3 +1,3 @@
-# snippetapp
+# Go Backend Snippet Application
 
-That repository exists for practice with Go. Currently I learn how to build clean, supportable architecture.
+This project is simple CRUD application built in Golang and using PostgreSQL as DB. 
