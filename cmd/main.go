@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"snippetapp/bootstrap"
+	"snippetapp/config"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
@@ -18,8 +18,7 @@ type Snippet struct {
 	gorm.Model
 }
 
-var app = bootstrap.App()
-var env = app.Env
+var env = config.Get()
 
 func getSnippetByID(id string) (Snippet, error) {
 	var dsn = fmt.Sprintf("host=%s user=%s password=abc123 dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", env.DBHost, env.DBUser, env.DBName, env.DBPort)
