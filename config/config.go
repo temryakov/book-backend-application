@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"log"
+	"sync"
 
 	"github.com/spf13/viper"
 )
@@ -15,20 +16,26 @@ type Config struct {
 	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
 }
 
+var (
+	config Config
+	once   sync.Once
+)
+
 func Get() *Config {
-	fmt.Print("Initializing enviroment variables")
-	config := Config{}
-	viper.SetConfigFile(".env")
+	once.Do(func() {
+		fmt.Print("Initializing enviroment variables")
+		config := Config{}
+		viper.SetConfigFile(".env")
 
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Fatal("Can't find the file .env : ", err)
-	}
+		err := viper.ReadInConfig()
+		if err != nil {
+			log.Fatal("Can't find the file .env : ", err)
+		}
 
-	err = viper.Unmarshal(&config)
-	if err != nil {
-		log.Fatal("Environment can't be loaded: ", err)
-	}
-
+		err = viper.Unmarshal(&config)
+		if err != nil {
+			log.Fatal("Environment can't be loaded: ", err)
+		}
+	})
 	return &config
 }
