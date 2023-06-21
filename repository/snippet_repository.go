@@ -9,18 +9,26 @@ import (
 )
 
 type snippetRepository struct {
-	db *gorm.DB
+	database   *gorm.DB
+	collection string
 }
 
-func (r *snippetRepository) GetSnippetByID(ctx context.Context, id int) (*domain.Snippet, error) {
+func NewSnippetRepository(database *gorm.DB, collection string) domain.SnippetRepository {
+	return &snippetRepository{
+		database:   database,
+		collection: collection,
+	}
+}
+
+func (r *snippetRepository) FetchByID(ctx context.Context, id string) (domain.Snippet, error) {
 
 	var snippet domain.Snippet
 
-	if err := r.db.WithContext(ctx).First(&snippet, id).Error; err != nil {
+	if err := r.database.WithContext(ctx).First(&snippet, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errors.New("snippet not found")
+			return domain.Snippet{}, nil
 		}
-		return nil, err
+		return domain.Snippet{}, err
 	}
-	return &snippet, nil
+	return snippet, nil
 }
