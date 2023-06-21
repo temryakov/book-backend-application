@@ -9,11 +9,12 @@ import (
 )
 
 type Config struct {
-	DBHost        string `mapstructure:"DB_HOST"`
-	DBPort        string `mapstructure:"DB_PORT"`
-	DBUser        string `mapstructure:"DB_USER"`
-	DBName        string `mapstructure:"DB_NAME"`
-	ServerAddress string `mapstructure:"SERVER_ADDRESS"`
+	DBHost         string `mapstructure:"DB_HOST"`
+	DBPort         string `mapstructure:"DB_PORT"`
+	DBUser         string `mapstructure:"DB_USER"`
+	DBName         string `mapstructure:"DB_NAME"`
+	ServerAddress  string `mapstructure:"SERVER_ADDRESS"`
+	ContextTimeout int    `mapstructure:"CONTEXT_TIMEOUT"`
 }
 
 var (
