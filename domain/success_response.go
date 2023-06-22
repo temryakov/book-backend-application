@@ -5,7 +5,7 @@ type SnippetData struct {
 	Data    map[string]any `json:"data"`
 }
 
-func SuccessCreation(s *Snippet) SnippetData {
+func FetchByIdSuccess(s *Snippet) SnippetData {
 	return SnippetData{
 		Message: "Snippet is successfully found! =)",
 		Data: map[string]any{
