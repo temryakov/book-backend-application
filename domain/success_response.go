@@ -1,17 +1,25 @@
 package domain
 
 type SnippetData struct {
-	Message string         `json:"message"`
-	Data    map[string]any `json:"data"`
+	Message string `json:"message"`
+	Data    struct {
+		ID    uint   `json:"id"`
+		Title string `json:"title"`
+		Text  string `json:"text"`
+	} `json:"data"`
 }
 
 func FetchByIdSuccess(s *Snippet) SnippetData {
 	return SnippetData{
 		Message: "Snippet is successfully found! =)",
-		Data: map[string]any{
-			"id":    s.ID,
-			"title": s.Title,
-			"text":  s.Text,
+		Data: struct {
+			ID    uint   `json:"id"`
+			Title string `json:"title"`
+			Text  string `json:"text"`
+		}{
+			ID:    s.ID,
+			Title: s.Title,
+			Text:  s.Text,
 		},
 	}
 }
