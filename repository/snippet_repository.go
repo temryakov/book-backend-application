@@ -32,3 +32,16 @@ func (r *snippetRepository) FetchByID(ctx context.Context, id uint16) (domain.Sn
 	}
 	return snippet, nil
 }
+
+func (r *snippetRepository) Fetch(ctx context.Context) ([]domain.Snippet, error) {
+
+	var snippets []domain.Snippet
+
+	if err := r.database.WithContext(ctx).Find(&snippets).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return []domain.Snippet{}, err
+		}
+		return []domain.Snippet{}, err
+	}
+	return snippets, nil
+}

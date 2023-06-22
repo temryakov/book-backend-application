@@ -18,8 +18,14 @@ func NewSnippetUsecase(snippetRepository domain.SnippetRepository, timeout time.
 	}
 }
 
-func (su *snippetUsecase) FetchByID(c context.Context, userID uint16) (domain.Snippet, error) {
+func (su *snippetUsecase) FetchByID(c context.Context, snippetID uint16) (domain.Snippet, error) {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.snippetRepository.FetchByID(ctx, userID)
+	return su.snippetRepository.FetchByID(ctx, snippetID)
+}
+
+func (su *snippetUsecase) Fetch(c context.Context) ([]domain.Snippet, error) {
+	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
+	defer cancel()
+	return su.snippetRepository.Fetch(ctx)
 }

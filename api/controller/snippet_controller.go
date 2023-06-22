@@ -33,7 +33,23 @@ func (u *SnippetController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	res := domain.SuccessCreation(&snippet)
+	res := domain.FetchByIdSuccess(&snippet)
 
 	c.JSON(http.StatusOK, res)
+}
+
+func (u *SnippetController) Fetch(c *gin.Context) {
+
+	snippets, err := u.SnippetUsecase.Fetch(c)
+
+	if err == gorm.ErrRecordNotFound {
+		c.JSON(http.StatusNotFound, domain.SnippetNotFound)
+		return
+	}
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, snippets)
 }
