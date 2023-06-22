@@ -17,9 +17,9 @@ const (
 )
 
 type SnippetRepository interface {
-	FetchByID(c context.Context, userID string) (Snippet, error)
+	FetchByID(c context.Context, snippetID uint16) (Snippet, error)
 }
 
 type SnippetUsecase interface {
-	FetchByID(c context.Context, userID string) (Snippet, error)
+	FetchByID(c context.Context, snippetID uint16) (Snippet, error)
 }
