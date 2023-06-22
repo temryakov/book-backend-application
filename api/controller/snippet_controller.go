@@ -18,24 +18,22 @@ func (u *SnippetController) FetchByID(c *gin.Context) {
 	snippetId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
 
 	if errType != nil {
-		c.JSON(http.StatusBadRequest, domain.ErrorResponse{Message: "Bad Request =/"})
+		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
 
 	snippet, err := u.SnippetUsecase.FetchByID(c, uint16(snippetId))
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.ErrorResponse{Message: "Snippet not found =("})
+		c.JSON(http.StatusNotFound, domain.SnippetNotFound)
 		return
 	}
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "...Oops."})
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
 
-	c.JSON(http.StatusOK,
-		gin.H{"success": true,
-			"id":   snippet.ID,
-			"data": map[string]string{"title": snippet.Title, "text": snippet.Text},
-		})
+	res := domain.SuccessCreation(&snippet)
+
+	c.JSON(http.StatusOK, res)
 }
