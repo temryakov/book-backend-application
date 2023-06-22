@@ -20,13 +20,13 @@ func NewSnippetRepository(database *gorm.DB, collection string) domain.SnippetRe
 	}
 }
 
-func (r *snippetRepository) FetchByID(ctx context.Context, id string) (domain.Snippet, error) {
+func (r *snippetRepository) FetchByID(ctx context.Context, id uint16) (domain.Snippet, error) {
 
 	var snippet domain.Snippet
 
 	if err := r.database.WithContext(ctx).First(&snippet, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return domain.Snippet{}, nil
+			return domain.Snippet{}, err
 		}
 		return domain.Snippet{}, err
 	}
