@@ -22,7 +22,7 @@ func (u *SnippetController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	snippet, err := u.SnippetUsecase.FetchByID(c, uint16(snippetId))
+	snippet, err := u.SnippetUsecase.FetchByID(c, uint(snippetId))
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.SnippetNotFound)

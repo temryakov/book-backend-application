@@ -19,12 +19,12 @@ const (
 
 type SnippetRepository interface {
 	Fetch(c context.Context) ([]Snippet, error)
-	FetchByID(c context.Context, snippetID uint16) (Snippet, error)
+	FetchByID(c context.Context, snippetID uint) (Snippet, error)
 	Create(c context.Context, snippet *Snippet) error
 }
 
 type SnippetUsecase interface {
 	Fetch(c context.Context) ([]Snippet, error)
-	FetchByID(c context.Context, snippetID uint16) (Snippet, error)
+	FetchByID(c context.Context, snippetID uint) (Snippet, error)
 	Create(c context.Context, snippet *Snippet) error
 }
