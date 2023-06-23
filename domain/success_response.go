@@ -1,5 +1,8 @@
 package domain
 
+type SuccessResponse struct {
+	Message string `json:"message"`
+}
 type SnippetData struct {
 	Message string `json:"message"`
 	Data    struct {

@@ -45,3 +45,8 @@ func (r *snippetRepository) Fetch(ctx context.Context) ([]domain.Snippet, error)
 	}
 	return snippets, nil
 }
+
+func (r *snippetRepository) Create(ctx context.Context, snippet *domain.Snippet) error {
+
+	return r.database.WithContext(ctx).Create(&snippet).Error
+}

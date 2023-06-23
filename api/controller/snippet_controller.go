@@ -53,3 +53,25 @@ func (u *SnippetController) Fetch(c *gin.Context) {
 
 	c.JSON(http.StatusOK, snippets)
 }
+
+func (u *SnippetController) Create(c *gin.Context) {
+
+	var snippet domain.Snippet
+
+	err := c.ShouldBind(&snippet)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
+		return
+	}
+
+	err = u.SnippetUsecase.Create(c, &snippet)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.SuccessResponse{
+		Message: "Snippet created successfully. %)",
+	})
+}

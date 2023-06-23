@@ -7,8 +7,9 @@ import (
 )
 
 type Snippet struct {
-	Title string
-	Text  string
+	ID    uint   `json:"id"`
+	Title string `json:"title" binding:"required"`
+	Text  string `json:"text" binding:"required"`
 	gorm.Model
 }
 
@@ -19,9 +20,11 @@ const (
 type SnippetRepository interface {
 	Fetch(c context.Context) ([]Snippet, error)
 	FetchByID(c context.Context, snippetID uint16) (Snippet, error)
+	Create(c context.Context, snippet *Snippet) error
 }
 
 type SnippetUsecase interface {
 	Fetch(c context.Context) ([]Snippet, error)
 	FetchByID(c context.Context, snippetID uint16) (Snippet, error)
+	Create(c context.Context, snippet *Snippet) error
 }
