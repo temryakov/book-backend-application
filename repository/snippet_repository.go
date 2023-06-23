@@ -46,12 +46,7 @@ func (r *snippetRepository) Fetch(ctx context.Context) ([]domain.Snippet, error)
 	return snippets, nil
 }
 
-func (r *snippetRepository) Create(ctx context.Context) (domain.Snippet, error) {
+func (r *snippetRepository) Create(ctx context.Context, snippet *domain.Snippet) error {
 
-	var snippet domain.Snippet
-
-	if err := r.database.WithContext(ctx).Create(&snippet).Error; err != nil {
-		return domain.Snippet{}, err
-	}
-	return snippet, nil
+	return r.database.WithContext(ctx).Create(&snippet).Error
 }

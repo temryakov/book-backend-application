@@ -29,3 +29,9 @@ func (su *snippetUsecase) Fetch(c context.Context) ([]domain.Snippet, error) {
 	defer cancel()
 	return su.snippetRepository.Fetch(ctx)
 }
+
+func (su *snippetUsecase) Create(c context.Context, snippet *domain.Snippet) error {
+	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
+	defer cancel()
+	return su.snippetRepository.Create(ctx, snippet)
+}
