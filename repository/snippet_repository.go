@@ -49,7 +49,12 @@ func (r *snippetRepository) Fetch(ctx context.Context) ([]domain.Snippet, error)
 
 func (r *snippetRepository) Create(ctx context.Context, snippet *domain.Snippet) error {
 
-	return r.database.WithContext(ctx).Create(&snippet).Error
+	return r.database.WithContext(ctx).Save(&snippet).Error
+}
+
+func (r *snippetRepository) Update(ctx context.Context, snippet *domain.Snippet, id uint) error {
+
+	return r.database.WithContext(ctx).Save(&snippet).Error
 }
 
 func (r *snippetRepository) Delete(ctx context.Context, id uint) error {

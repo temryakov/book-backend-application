@@ -20,6 +20,7 @@ type SnippetRepository interface {
 	Fetch(c context.Context) ([]Snippet, error)
 	FetchByID(c context.Context, snippetID uint) (Snippet, error)
 	Create(c context.Context, snippet *Snippet) error
+	Update(c context.Context, snippet *Snippet, snippetID uint) error
 	Delete(c context.Context, snippetID uint) error
 }
 
@@ -27,5 +28,6 @@ type SnippetUsecase interface {
 	Fetch(c context.Context) ([]Snippet, error)
 	FetchByID(c context.Context, snippetID uint) (Snippet, error)
 	Create(c context.Context, snippet *Snippet) error
+	Update(c context.Context, snippet *Snippet, snippetID uint) error
 	Delete(c context.Context, snippetID uint) error
 }
