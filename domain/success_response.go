@@ -1,28 +1,14 @@
 package domain
 
-type SuccessResponse struct {
+type SuccessfulMessage struct {
 	Message string `json:"message"`
 }
 type SnippetData struct {
-	Message string `json:"message"`
-	Data    struct {
-		ID    uint   `json:"id"`
-		Title string `json:"title"`
-		Text  string `json:"text"`
-	} `json:"data"`
+	ID    uint   `json:"id"`
+	Title string `json:"title"`
+	Text  string `json:"text"`
 }
-
-func FetchByIdSuccess(s *Snippet) SnippetData {
-	return SnippetData{
-		Message: "Snippet is successfully found! =)",
-		Data: struct {
-			ID    uint   `json:"id"`
-			Title string `json:"title"`
-			Text  string `json:"text"`
-		}{
-			ID:    s.ID,
-			Title: s.Title,
-			Text:  s.Text,
-		},
-	}
+type FetchSnippetResponse struct {
+	Message string      `json:"message"`
+	Data    SnippetData `json:"data"`
 }

@@ -34,9 +34,14 @@ func (u *SnippetController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	res := domain.FetchByIdSuccess(&snippet)
-
-	c.JSON(http.StatusOK, res)
+	c.JSON(http.StatusOK, domain.FetchSnippetResponse{
+		Message: "Snippet is successfully found! %)",
+		Data: domain.SnippetData{
+			ID:    snippet.ID,
+			Title: snippet.Title,
+			Text:  snippet.Text,
+		},
+	})
 }
 
 func (u *SnippetController) Fetch(c *gin.Context) {
@@ -72,7 +77,7 @@ func (u *SnippetController) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.SuccessResponse{
+	c.JSON(http.StatusOK, domain.SuccessfulMessage{
 		Message: "Snippet created successfully. %)",
 	})
 }
@@ -110,7 +115,7 @@ func (u *SnippetController) Update(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.SuccessResponse{
+	c.JSON(http.StatusOK, domain.SuccessfulMessage{
 		Message: "Snippet updated successfully. 8-)",
 	})
 }
@@ -135,7 +140,7 @@ func (u *SnippetController) Delete(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.SuccessResponse{
+	c.JSON(http.StatusOK, domain.SuccessfulMessage{
 		Message: "Snippet successfully deleted. :^)",
 	})
 }
