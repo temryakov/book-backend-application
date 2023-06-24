@@ -65,7 +65,7 @@ func (u *SnippetController) Create(c *gin.Context) {
 		return
 	}
 
-	err = u.SnippetUsecase.Create(c, &snippet)
+	err = u.SnippetUsecase.Save(c, &snippet)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
@@ -103,7 +103,7 @@ func (u *SnippetController) Update(c *gin.Context) {
 		return
 	}
 
-	err = u.SnippetUsecase.Create(c, &snippet)
+	err = u.SnippetUsecase.Save(c, &snippet)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)

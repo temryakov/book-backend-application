@@ -31,16 +31,10 @@ func (su *snippetUsecase) Fetch(c context.Context) ([]domain.Snippet, error) {
 	return su.snippetRepository.Fetch(ctx)
 }
 
-func (su *snippetUsecase) Create(c context.Context, snippet *domain.Snippet) error {
+func (su *snippetUsecase) Save(c context.Context, snippet *domain.Snippet) error {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.snippetRepository.Create(ctx, snippet)
-}
-
-func (su *snippetUsecase) Update(c context.Context, snippet *domain.Snippet, snippetID uint) error {
-	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
-	defer cancel()
-	return su.snippetRepository.Update(ctx, snippet, snippetID)
+	return su.snippetRepository.Save(ctx, snippet)
 }
 
 func (su *snippetUsecase) Delete(c context.Context, snippetID uint) error {
