@@ -24,7 +24,6 @@ func NewSnippetRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration,
 	group.GET("/snippets", sc.Fetch)
 	group.POST("/snippet", sc.Create)
 	group.DELETE("/snippet/:id", sc.Delete)
-
-	// group.PATCH("/snippet/:id")
+	group.PATCH("/snippet/:id", sc.Update)
 
 }
