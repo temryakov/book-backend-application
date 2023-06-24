@@ -51,15 +51,15 @@ func (r *snippetRepository) Create(ctx context.Context, snippet *domain.Snippet)
 	return r.database.WithContext(ctx).Create(&snippet).Error
 }
 
-func (r *snippetRepository) Delete(ctx context.Context, id uint) (domain.Snippet, error) {
+func (r *snippetRepository) Delete(ctx context.Context, id uint) error {
 
 	var snippet domain.Snippet
 
-	if err := r.database.WithContext(ctx).First(&snippet, id).Error; err != nil {
+	if err := r.database.WithContext(ctx).Delete(&snippet, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return domain.Snippet{}, err
+			return err
 		}
-		return domain.Snippet{}, err
+		return err
 	}
-	return snippet, nil
+	return nil
 }
