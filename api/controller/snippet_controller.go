@@ -34,7 +34,7 @@ func (u *SnippetController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.FetchByIDSnippetsSerializator{
+	c.JSON(http.StatusOK, domain.SnippetDataSerializator{
 		Message: "Snippet is successfully found! %)",
 		Data: domain.SnippetData{
 			ID:    snippet.ID,
@@ -66,7 +66,7 @@ func (u *SnippetController) Fetch(c *gin.Context) {
 		})
 	}
 
-	c.JSON(http.StatusOK, domain.FetchSnippetsSerializator{
+	c.JSON(http.StatusOK, domain.SnippetDataArraySerializator{
 		Message: "Snippets are successfully found! %)",
 		Data:    arr,
 	})

@@ -8,12 +8,12 @@ type SnippetData struct {
 	Title string `json:"title"`
 	Text  string `json:"text"`
 }
-type FetchByIDSnippetsSerializator struct {
+type SnippetDataSerializator struct {
 	Message string      `json:"message"`
 	Data    SnippetData `json:"data"`
 }
 
-type FetchSnippetsSerializator struct {
+type SnippetDataArraySerializator struct {
 	Message string        `json:"message"`
 	Data    []SnippetData `json:"data"`
 }
