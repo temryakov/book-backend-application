@@ -34,7 +34,7 @@ func (u *SnippetController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.FetchSnippetResponse{
+	c.JSON(http.StatusOK, domain.FetchByIDSnippetsSerializator{
 		Message: "Snippet is successfully found! %)",
 		Data: domain.SnippetData{
 			ID:    snippet.ID,
@@ -57,7 +57,19 @@ func (u *SnippetController) Fetch(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, snippets)
+	var arr []domain.SnippetData
+	for _, item := range snippets {
+		arr = append(arr, domain.SnippetData{
+			ID:    item.ID,
+			Title: item.Title,
+			Text:  item.Text,
+		})
+	}
+
+	c.JSON(http.StatusOK, domain.FetchSnippetsSerializator{
+		Message: "Snippets are successfully found! %)",
+		Data:    arr,
+	})
 }
 
 func (u *SnippetController) Create(c *gin.Context) {
@@ -78,7 +90,7 @@ func (u *SnippetController) Create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
-		Message: "Snippet created successfully. %)",
+		Message: "Snippet created successfully! %)",
 	})
 }
 
@@ -116,7 +128,7 @@ func (u *SnippetController) Update(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
-		Message: "Snippet updated successfully. 8-)",
+		Message: "Snippet updated successfully! 8-)",
 	})
 }
 
@@ -141,6 +153,6 @@ func (u *SnippetController) Delete(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
-		Message: "Snippet successfully deleted. :^)",
+		Message: "Snippet successfully deleted! :^)",
 	})
 }
