@@ -2,8 +2,9 @@ package controller
 
 import (
 	"net/http"
-	"snippetapp/domain"
 	"strconv"
+
+	"github.com/temryakov/go-backend-snippet-app/domain"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

@@ -1,12 +1,13 @@
 package route
 
 import (
-	"snippetapp/api/controller"
-	"snippetapp/bootstrap"
-	"snippetapp/domain"
-	"snippetapp/repository"
-	"snippetapp/usecase"
 	"time"
+
+	"github.com/temryakov/go-backend-snippet-app/api/controller"
+	"github.com/temryakov/go-backend-snippet-app/bootstrap"
+	"github.com/temryakov/go-backend-snippet-app/domain"
+	"github.com/temryakov/go-backend-snippet-app/repository"
+	"github.com/temryakov/go-backend-snippet-app/usecase"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

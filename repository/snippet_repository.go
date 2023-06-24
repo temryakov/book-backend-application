@@ -3,7 +3,8 @@ package repository
 import (
 	"context"
 	"errors"
-	"snippetapp/domain"
+
+	"github.com/temryakov/go-backend-snippet-app/domain"
 
 	"gorm.io/gorm"
 )

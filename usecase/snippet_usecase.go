@@ -2,8 +2,9 @@ package usecase
 
 import (
 	"context"
-	"snippetapp/domain"
 	"time"
+
+	"github.com/temryakov/go-backend-snippet-app/domain"
 )
 
 type snippetUsecase struct {

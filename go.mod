@@ -1,4 +1,4 @@
-module snippetapp
+module github.com/temryakov/go-backend-snippet-app
 
 go 1.20
 

@@ -1,8 +1,9 @@
 package route
 
 import (
-	"snippetapp/bootstrap"
 	"time"
+
+	"github.com/temryakov/go-backend-snippet-app/bootstrap"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

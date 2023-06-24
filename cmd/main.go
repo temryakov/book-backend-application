@@ -1,9 +1,10 @@
 package main
 
 import (
-	"snippetapp/api/route"
-	"snippetapp/bootstrap"
 	"time"
+
+	"github.com/temryakov/go-backend-snippet-app/api/route"
+	"github.com/temryakov/go-backend-snippet-app/bootstrap"
 
 	"github.com/gin-gonic/gin"
 )
