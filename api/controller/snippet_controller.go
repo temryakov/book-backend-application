@@ -75,3 +75,28 @@ func (u *SnippetController) Create(c *gin.Context) {
 		Message: "Snippet created successfully. %)",
 	})
 }
+
+func (u *SnippetController) Delete(c *gin.Context) {
+
+	snippetId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
+
+	if errType != nil {
+		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
+		return
+	}
+
+	err := u.SnippetUsecase.Delete(c, uint(snippetId))
+
+	if err == gorm.ErrRecordNotFound {
+		c.JSON(http.StatusNotFound, domain.SnippetNotFound)
+		return
+	}
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.SuccessResponse{
+		Message: "Snippet successfully deleted. :^)",
+	})
+}

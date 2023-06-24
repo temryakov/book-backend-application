@@ -35,3 +35,9 @@ func (su *snippetUsecase) Create(c context.Context, snippet *domain.Snippet) err
 	defer cancel()
 	return su.snippetRepository.Create(ctx, snippet)
 }
+
+func (su *snippetUsecase) Delete(c context.Context, snippetID uint) error {
+	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
+	defer cancel()
+	return su.snippetRepository.Delete(ctx, snippetID)
+}
