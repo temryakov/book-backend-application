@@ -10,23 +10,23 @@ import (
 	"gorm.io/gorm"
 )
 
-type SnippetController struct {
-	SnippetUsecase domain.SnippetUsecase
+type BookController struct {
+	BookUsecase domain.BookUsecase
 }
 
-func (u *SnippetController) FetchByID(c *gin.Context) {
+func (u *BookController) FetchByID(c *gin.Context) {
 
-	snippetId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
 
 	if errType != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
 
-	snippet, err := u.SnippetUsecase.FetchByID(c, uint(snippetId))
+	book, err := u.BookUsecase.FetchByID(c, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.SnippetNotFound)
+		c.JSON(http.StatusNotFound, domain.BookNotFound)
 		return
 	}
 	if err != nil {
@@ -34,22 +34,22 @@ func (u *SnippetController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.SnippetDataSerializator{
-		Message: "Snippet is successfully found! %)",
-		Data: domain.SnippetData{
-			ID:    snippet.ID,
-			Title: snippet.Title,
-			Text:  snippet.Text,
+	c.JSON(http.StatusOK, domain.BookDataSerializator{
+		Message: "Book is successfully found! %)",
+		Data: domain.BookData{
+			ID:    book.ID,
+			Title: book.Title,
+			Text:  book.Text,
 		},
 	})
 }
 
-func (u *SnippetController) Fetch(c *gin.Context) {
+func (u *BookController) Fetch(c *gin.Context) {
 
-	snippets, err := u.SnippetUsecase.Fetch(c)
+	books, err := u.BookUsecase.Fetch(c)
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.SnippetNotFound)
+		c.JSON(http.StatusNotFound, domain.BookNotFound)
 		return
 	}
 	if err != nil {
@@ -57,32 +57,32 @@ func (u *SnippetController) Fetch(c *gin.Context) {
 		return
 	}
 
-	var arr []domain.SnippetData
-	for _, item := range snippets {
-		arr = append(arr, domain.SnippetData{
+	var arr []domain.BookData
+	for _, item := range books {
+		arr = append(arr, domain.BookData{
 			ID:    item.ID,
 			Title: item.Title,
 			Text:  item.Text,
 		})
 	}
 
-	c.JSON(http.StatusOK, domain.SnippetDataArraySerializator{
-		Message: "Snippets are successfully found! %)",
+	c.JSON(http.StatusOK, domain.BookDataArraySerializator{
+		Message: "Books are successfully found! %)",
 		Data:    arr,
 	})
 }
 
-func (u *SnippetController) Create(c *gin.Context) {
+func (u *BookController) Create(c *gin.Context) {
 
-	var snippet domain.Snippet
+	var book domain.Book
 
-	err := c.ShouldBind(&snippet)
+	err := c.ShouldBind(&book)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
 
-	err = u.SnippetUsecase.Save(c, &snippet)
+	err = u.BookUsecase.Save(c, &book)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
@@ -90,23 +90,23 @@ func (u *SnippetController) Create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
-		Message: "Snippet created successfully! %)",
+		Message: "Book created successfully! %)",
 	})
 }
 
-func (u *SnippetController) Update(c *gin.Context) {
+func (u *BookController) Update(c *gin.Context) {
 
-	snippetId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
 
 	if errType != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
 
-	snippet, err := u.SnippetUsecase.FetchByID(c, uint(snippetId))
+	book, err := u.BookUsecase.FetchByID(c, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.SnippetNotFound)
+		c.JSON(http.StatusNotFound, domain.BookNotFound)
 		return
 	}
 	if err != nil {
@@ -114,13 +114,13 @@ func (u *SnippetController) Update(c *gin.Context) {
 		return
 	}
 
-	errValidation := c.ShouldBind(&snippet)
+	errValidation := c.ShouldBind(&book)
 	if errValidation != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
 
-	err = u.SnippetUsecase.Save(c, &snippet)
+	err = u.BookUsecase.Save(c, &book)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
@@ -128,23 +128,23 @@ func (u *SnippetController) Update(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
-		Message: "Snippet updated successfully! 8-)",
+		Message: "Book updated successfully! 8-)",
 	})
 }
 
-func (u *SnippetController) Delete(c *gin.Context) {
+func (u *BookController) Delete(c *gin.Context) {
 
-	snippetId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
 
 	if errType != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
 
-	err := u.SnippetUsecase.Delete(c, uint(snippetId))
+	err := u.BookUsecase.Delete(c, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.SnippetNotFound)
+		c.JSON(http.StatusNotFound, domain.BookNotFound)
 		return
 	}
 	if err != nil {
@@ -153,6 +153,6 @@ func (u *SnippetController) Delete(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
-		Message: "Snippet successfully deleted! :^)",
+		Message: "Book successfully deleted! :^)",
 	})
 }
