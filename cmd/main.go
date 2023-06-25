@@ -3,8 +3,8 @@ package main
 import (
 	"time"
 
-	"github.com/temryakov/go-backend-snippet-app/api/route"
-	"github.com/temryakov/go-backend-snippet-app/bootstrap"
+	"github.com/temryakov/go-backend-book-app/api/route"
+	"github.com/temryakov/go-backend-book-app/bootstrap"
 
 	"github.com/gin-gonic/gin"
 )
