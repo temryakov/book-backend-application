@@ -31,10 +31,10 @@ func (su *bookUsecase) Fetch(c context.Context) ([]domain.Book, error) {
 	return su.bookRepository.Fetch(ctx)
 }
 
-func (su *bookUsecase) Save(c context.Context, snippet *domain.Book) error {
+func (su *bookUsecase) Save(c context.Context, book *domain.Book) error {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.bookRepository.Save(ctx, snippet)
+	return su.bookRepository.Save(ctx, book)
 }
 
 func (su *bookUsecase) Delete(c context.Context, bookId uint) error {
