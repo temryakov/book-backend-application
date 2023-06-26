@@ -37,9 +37,10 @@ func (u *BookController) FetchByID(c *gin.Context) {
 	c.JSON(http.StatusOK, domain.BookDataSerializator{
 		Message: "Book is successfully found! %)",
 		Data: domain.BookData{
-			ID:    book.ID,
-			Title: book.Title,
-			Text:  book.Text,
+			ID:             book.ID,
+			Title:          book.Title,
+			Author:         book.Author,
+			ChaptersAmount: book.ChaptersAmount,
 		},
 	})
 }
@@ -60,9 +61,10 @@ func (u *BookController) Fetch(c *gin.Context) {
 	var arr []domain.BookData
 	for _, item := range books {
 		arr = append(arr, domain.BookData{
-			ID:    item.ID,
-			Title: item.Title,
-			Text:  item.Text,
+			ID:             item.ID,
+			Title:          item.Title,
+			Author:         item.Author,
+			ChaptersAmount: item.ChaptersAmount,
 		})
 	}
 

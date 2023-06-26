@@ -7,8 +7,9 @@ import (
 )
 
 type Book struct {
-	Title string `json:"title" binding:"required"`
-	Text  string `json:"text" binding:"required"`
+	Title          string `json:"title" binding:"required"`
+	Author         string `json:"author" binding:"required"`
+	ChaptersAmount uint   `json:"chapters_amount" binding:"required"`
 	gorm.Model
 }
 
