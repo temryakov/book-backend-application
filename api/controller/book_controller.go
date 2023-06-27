@@ -26,7 +26,9 @@ func (u *BookController) FetchByID(c *gin.Context) {
 	book, err := u.BookUsecase.FetchByID(c, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.BookNotFound)
+		c.JSON(http.StatusNotFound, domain.ErrorResponse{
+			Message: "Book is not found. =(",
+		})
 		return
 	}
 	if err != nil {
@@ -50,7 +52,9 @@ func (u *BookController) Fetch(c *gin.Context) {
 	books, err := u.BookUsecase.Fetch(c)
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.BookNotFound)
+		c.JSON(http.StatusNotFound, domain.ErrorResponse{
+			Message: "Books are not found. =(",
+		})
 		return
 	}
 	if err != nil {
