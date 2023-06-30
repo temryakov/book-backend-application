@@ -12,7 +12,7 @@ type bookUsecase struct {
 	contextTimeout time.Duration
 }
 
-func NewBookUsecase(bookRepository domain.BookRepository, timeout time.Duration) domain.BookRepository {
+func NewBookUsecase(bookRepository domain.BookRepository, timeout time.Duration) domain.BookUsecase {
 	return &bookUsecase{
 		bookRepository: bookRepository,
 		contextTimeout: timeout,

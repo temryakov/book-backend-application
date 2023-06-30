@@ -16,9 +16,9 @@ type BookController struct {
 
 func (u *BookController) FetchByID(c *gin.Context) {
 
-	bookId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, err := strconv.ParseUint(c.Param("id"), 0, 16)
 
-	if errType != nil {
+	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
@@ -61,7 +61,6 @@ func (u *BookController) Fetch(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
-
 	var arr []domain.BookData
 	for _, item := range books {
 		arr = append(arr, domain.BookData{
@@ -82,15 +81,12 @@ func (u *BookController) Create(c *gin.Context) {
 
 	var book domain.Book
 
-	err := c.ShouldBind(&book)
-	if err != nil {
+	if err := c.ShouldBind(&book); err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
 
-	err = u.BookUsecase.Save(c, &book)
-
-	if err != nil {
+	if err := u.BookUsecase.Save(c, &book); err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
@@ -102,13 +98,12 @@ func (u *BookController) Create(c *gin.Context) {
 
 func (u *BookController) Update(c *gin.Context) {
 
-	bookId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, err := strconv.ParseUint(c.Param("id"), 0, 16)
 
-	if errType != nil {
+	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-
 	book, err := u.BookUsecase.FetchByID(c, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
@@ -119,20 +114,14 @@ func (u *BookController) Update(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
-
-	errValidation := c.ShouldBind(&book)
-	if errValidation != nil {
+	if err = c.ShouldBind(&book); err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-
-	err = u.BookUsecase.Save(c, &book)
-
-	if err != nil {
+	if err = u.BookUsecase.Save(c, &book); err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
-
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
 		Message: "Book updated successfully! 8-)",
 	})
@@ -140,14 +129,13 @@ func (u *BookController) Update(c *gin.Context) {
 
 func (u *BookController) Delete(c *gin.Context) {
 
-	bookId, errType := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, err := strconv.ParseUint(c.Param("id"), 0, 16)
 
-	if errType != nil {
+	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-
-	err := u.BookUsecase.Delete(c, uint(bookId))
+	err = u.BookUsecase.Delete(c, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.BookNotFound)
@@ -157,7 +145,6 @@ func (u *BookController) Delete(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
-
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
 		Message: "Book successfully deleted! :^)",
 	})
