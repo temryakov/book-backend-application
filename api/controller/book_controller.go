@@ -51,18 +51,13 @@ func (u *BookController) Fetch(c *gin.Context) {
 
 	books, err := u.BookUsecase.Fetch(c)
 
-	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.ErrorResponse{
-			Message: "Books are not found. =(",
-		})
-		return
-	}
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
 	var arr []domain.BookData
-	for _, item := range books {
+
+	for _, item := range *books {
 		arr = append(arr, domain.BookData{
 			ID:             item.ID,
 			Title:          item.Title,
@@ -72,7 +67,7 @@ func (u *BookController) Fetch(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, domain.BookDataArraySerializator{
-		Message: "Books are successfully found! %)",
+		Message: "Book list =P",
 		Data:    arr,
 	})
 }
@@ -118,7 +113,7 @@ func (u *BookController) Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-	if err = u.BookUsecase.Save(c, &book); err != nil {
+	if err = u.BookUsecase.Save(c, book); err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}

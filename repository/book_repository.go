@@ -21,28 +21,28 @@ func NewBookRepository(database *gorm.DB, collection string) domain.BookReposito
 	}
 }
 
-func (r *bookRepository) FetchByID(ctx context.Context, id uint) (domain.Book, error) {
+func (r *bookRepository) FetchByID(ctx context.Context, id uint) (*domain.Book, error) {
 
-	var book domain.Book
+	var book *domain.Book
 
 	if err := r.database.WithContext(ctx).First(&book, id).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return domain.Book{}, err
+			return nil, err
 		}
-		return domain.Book{}, err
+		return nil, err
 	}
 	return book, nil
 }
 
-func (r *bookRepository) Fetch(ctx context.Context) ([]domain.Book, error) {
+func (r *bookRepository) Fetch(ctx context.Context) (*[]domain.Book, error) {
 
-	var books []domain.Book
+	var books *[]domain.Book
 
 	if err := r.database.WithContext(ctx).Find(&books).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return []domain.Book{}, err
+			return nil, err
 		}
-		return []domain.Book{}, err
+		return nil, err
 	}
 	return books, nil
 }

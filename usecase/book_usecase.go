@@ -19,13 +19,13 @@ func NewBookUsecase(bookRepository domain.BookRepository, timeout time.Duration)
 	}
 }
 
-func (su *bookUsecase) FetchByID(c context.Context, bookId uint) (domain.Book, error) {
+func (su *bookUsecase) FetchByID(c context.Context, bookId uint) (*domain.Book, error) {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
 	return su.bookRepository.FetchByID(ctx, bookId)
 }
 
-func (su *bookUsecase) Fetch(c context.Context) ([]domain.Book, error) {
+func (su *bookUsecase) Fetch(c context.Context) (*[]domain.Book, error) {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
 	return su.bookRepository.Fetch(ctx)
