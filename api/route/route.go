@@ -12,5 +12,4 @@ import (
 func Setup(config *bootstrap.Config, db *gorm.DB, timeout time.Duration, gin *gin.Engine) {
 	publicRouter := gin.Group("/api")
 	NewBookRouter(config, db, timeout, publicRouter)
-	NewBookProgressRouter(config, db, timeout, publicRouter)
 }
