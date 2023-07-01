@@ -81,7 +81,7 @@ func (u *BookController) Create(c *gin.Context) {
 		return
 	}
 
-	if err := u.BookUsecase.Save(c, &book); err != nil {
+	if err := u.BookUsecase.Create(c, &book); err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
@@ -99,21 +99,21 @@ func (u *BookController) Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-	book, err := u.BookUsecase.FetchByID(c, uint(bookId))
+	var book *domain.Book
+
+	err = c.ShouldBind(&book)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
+		return
+	}
+	err = u.BookUsecase.Update(c, book, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.BookNotFound)
 		return
 	}
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
-		return
-	}
-	if err = c.ShouldBind(&book); err != nil {
-		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
-		return
-	}
-	if err = u.BookUsecase.Save(c, book); err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}

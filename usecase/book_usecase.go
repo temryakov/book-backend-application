@@ -31,10 +31,19 @@ func (su *bookUsecase) Fetch(c context.Context) (*[]domain.Book, error) {
 	return su.bookRepository.Fetch(ctx)
 }
 
-func (su *bookUsecase) Save(c context.Context, book *domain.Book) error {
+func (su *bookUsecase) Create(c context.Context, book *domain.Book) error {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.bookRepository.Save(ctx, book)
+	return su.bookRepository.Create(ctx, book)
+}
+func (su *bookUsecase) Update(c context.Context, book *domain.Book, bookId uint) error {
+	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
+	defer cancel()
+	model, err := su.bookRepository.FetchByID(ctx, bookId)
+	if err != nil {
+		return err
+	}
+	return su.bookRepository.Update(ctx, book, model)
 }
 
 func (su *bookUsecase) Delete(c context.Context, bookId uint) error {

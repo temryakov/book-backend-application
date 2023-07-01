@@ -47,16 +47,21 @@ func (r *bookRepository) Fetch(ctx context.Context) (*[]domain.Book, error) {
 	return books, nil
 }
 
-func (r *bookRepository) Save(ctx context.Context, book *domain.Book) error {
+func (r *bookRepository) Create(ctx context.Context, book *domain.Book) error {
 
 	return r.database.WithContext(ctx).Save(&book).Error
 }
+func (r *bookRepository) Update(ctx context.Context, book *domain.Book, Model *domain.Book) error {
 
-func (r *bookRepository) Delete(ctx context.Context, id uint) error {
+	r.database.WithContext(ctx).Model(&Model).Updates(&book)
+	return nil
+}
+
+func (r *bookRepository) Delete(ctx context.Context, bookId uint) error {
 
 	var book domain.Book
 
-	if err := r.database.WithContext(ctx).Delete(&book, id).Error; err != nil {
+	if err := r.database.WithContext(ctx).Delete(&book, bookId).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return err
 		}
