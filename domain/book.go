@@ -18,17 +18,17 @@ const (
 )
 
 type BookRepository interface {
-	Fetch(c context.Context) (*[]Book, error)
-	FetchByID(c context.Context, BookID uint) (*Book, error)
-	Create(c context.Context, book *Book) error
-	Update(c context.Context, book *Book, Model *Book) error
-	Delete(c context.Context, BookID uint) error
+	FetchBooks(c context.Context) (*[]Book, error)
+	FetchBookByID(c context.Context, BookID uint) (*Book, error)
+	CreateBook(c context.Context, book *Book) error
+	UpdateBook(c context.Context, book *Book, Model *Book) error
+	DeleteBook(c context.Context, BookID uint) error
 }
 
 type BookUsecase interface {
-	Fetch(c context.Context) (*[]Book, error)
-	FetchByID(c context.Context, BookID uint) (*Book, error)
-	Create(c context.Context, book *Book) error
-	Update(c context.Context, book *Book, BookID uint) error
-	Delete(c context.Context, BookID uint) error
+	FetchBooks(c context.Context) (*[]Book, error)
+	FetchBookByID(c context.Context, BookID uint) (*Book, error)
+	CreateBook(c context.Context, book *Book) error
+	UpdateBook(c context.Context, book *Book, BookID uint) error
+	DeleteBook(c context.Context, BookID uint) error
 }

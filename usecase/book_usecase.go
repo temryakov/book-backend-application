@@ -19,35 +19,35 @@ func NewBookUsecase(bookRepository domain.BookRepository, timeout time.Duration)
 	}
 }
 
-func (su *bookUsecase) FetchByID(c context.Context, bookId uint) (*domain.Book, error) {
+func (su *bookUsecase) FetchBookByID(c context.Context, bookId uint) (*domain.Book, error) {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.bookRepository.FetchByID(ctx, bookId)
+	return su.bookRepository.FetchBookByID(ctx, bookId)
 }
 
-func (su *bookUsecase) Fetch(c context.Context) (*[]domain.Book, error) {
+func (su *bookUsecase) FetchBooks(c context.Context) (*[]domain.Book, error) {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.bookRepository.Fetch(ctx)
+	return su.bookRepository.FetchBooks(ctx)
 }
 
-func (su *bookUsecase) Create(c context.Context, book *domain.Book) error {
+func (su *bookUsecase) CreateBook(c context.Context, book *domain.Book) error {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.bookRepository.Create(ctx, book)
+	return su.bookRepository.CreateBook(ctx, book)
 }
-func (su *bookUsecase) Update(c context.Context, book *domain.Book, bookId uint) error {
+func (su *bookUsecase) UpdateBook(c context.Context, book *domain.Book, bookId uint) error {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	model, err := su.bookRepository.FetchByID(ctx, bookId)
+	model, err := su.bookRepository.FetchBookByID(ctx, bookId)
 	if err != nil {
 		return err
 	}
-	return su.bookRepository.Update(ctx, book, model)
+	return su.bookRepository.UpdateBook(ctx, book, model)
 }
 
-func (su *bookUsecase) Delete(c context.Context, bookId uint) error {
+func (su *bookUsecase) DeleteBook(c context.Context, bookId uint) error {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.bookRepository.Delete(ctx, bookId)
+	return su.bookRepository.DeleteBook(ctx, bookId)
 }

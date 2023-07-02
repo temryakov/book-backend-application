@@ -23,7 +23,7 @@ func (u *BookController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	book, err := u.BookUsecase.FetchByID(c, uint(bookId))
+	book, err := u.BookUsecase.FetchBookByID(c, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.ErrorResponse{
@@ -49,7 +49,7 @@ func (u *BookController) FetchByID(c *gin.Context) {
 
 func (u *BookController) Fetch(c *gin.Context) {
 
-	books, err := u.BookUsecase.Fetch(c)
+	books, err := u.BookUsecase.FetchBooks(c)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
@@ -81,7 +81,7 @@ func (u *BookController) Create(c *gin.Context) {
 		return
 	}
 
-	if err := u.BookUsecase.Create(c, &book); err != nil {
+	if err := u.BookUsecase.CreateBook(c, &book); err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
@@ -107,7 +107,7 @@ func (u *BookController) Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-	err = u.BookUsecase.Update(c, book, uint(bookId))
+	err = u.BookUsecase.UpdateBook(c, book, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.BookNotFound)
@@ -130,7 +130,7 @@ func (u *BookController) Delete(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-	err = u.BookUsecase.Delete(c, uint(bookId))
+	err = u.BookUsecase.DeleteBook(c, uint(bookId))
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.BookNotFound)

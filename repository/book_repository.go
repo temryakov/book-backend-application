@@ -21,7 +21,7 @@ func NewBookRepository(database *gorm.DB, collection string) domain.BookReposito
 	}
 }
 
-func (r *bookRepository) FetchByID(ctx context.Context, id uint) (*domain.Book, error) {
+func (r *bookRepository) FetchBookByID(ctx context.Context, id uint) (*domain.Book, error) {
 
 	var book *domain.Book
 
@@ -31,7 +31,7 @@ func (r *bookRepository) FetchByID(ctx context.Context, id uint) (*domain.Book, 
 	return book, nil
 }
 
-func (r *bookRepository) Fetch(ctx context.Context) (*[]domain.Book, error) {
+func (r *bookRepository) FetchBooks(ctx context.Context) (*[]domain.Book, error) {
 
 	var books *[]domain.Book
 
@@ -41,17 +41,17 @@ func (r *bookRepository) Fetch(ctx context.Context) (*[]domain.Book, error) {
 	return books, nil
 }
 
-func (r *bookRepository) Create(ctx context.Context, book *domain.Book) error {
+func (r *bookRepository) CreateBook(ctx context.Context, book *domain.Book) error {
 
 	return r.database.WithContext(ctx).Save(&book).Error
 }
-func (r *bookRepository) Update(ctx context.Context, book *domain.Book, Model *domain.Book) error {
+func (r *bookRepository) UpdateBook(ctx context.Context, book *domain.Book, Model *domain.Book) error {
 
 	r.database.WithContext(ctx).Model(&Model).Updates(&book)
 	return nil
 }
 
-func (r *bookRepository) Delete(ctx context.Context, bookId uint) error {
+func (r *bookRepository) DeleteBook(ctx context.Context, bookId uint) error {
 
 	var book domain.Book
 
