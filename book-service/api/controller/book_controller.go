@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/temryakov/go-backend-book-app/domain"
+	"github.com/temryakov/go-backend-book-app/book-service/domain"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

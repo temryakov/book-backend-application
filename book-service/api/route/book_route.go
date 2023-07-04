@@ -3,11 +3,11 @@ package route
 import (
 	"time"
 
-	"github.com/temryakov/go-backend-book-app/api/controller"
-	"github.com/temryakov/go-backend-book-app/bootstrap"
-	"github.com/temryakov/go-backend-book-app/domain"
-	"github.com/temryakov/go-backend-book-app/repository"
-	"github.com/temryakov/go-backend-book-app/usecase"
+	"github.com/temryakov/go-backend-book-app/book-service/api/controller"
+	"github.com/temryakov/go-backend-book-app/book-service/bootstrap"
+	"github.com/temryakov/go-backend-book-app/book-service/domain"
+	"github.com/temryakov/go-backend-book-app/book-service/repository"
+	"github.com/temryakov/go-backend-book-app/book-service/usecase"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

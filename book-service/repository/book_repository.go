@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/temryakov/go-backend-book-app/domain"
+	"github.com/temryakov/go-backend-book-app/book-service/domain"
 
 	"gorm.io/gorm"
 )
