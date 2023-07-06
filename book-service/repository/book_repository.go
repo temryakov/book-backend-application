@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"errors"
 
 	"github.com/temryakov/go-backend-book-app/book-service/domain"
 
@@ -56,9 +55,6 @@ func (r *bookRepository) DeleteBook(ctx context.Context, bookId uint) error {
 	var book domain.Book
 
 	if err := r.database.WithContext(ctx).Delete(&book, bookId).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return err
-		}
 		return err
 	}
 	return nil
