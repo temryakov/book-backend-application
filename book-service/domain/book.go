@@ -29,10 +29,6 @@ type AllBookResponse struct {
 	Data    []BookData `json:"data"`
 }
 
-const (
-	CollectionBook = "Books"
-)
-
 type BookRepository interface {
 	FetchBooks(c context.Context) (*[]Book, error)
 	FetchBookByID(c context.Context, BookID uint) (*Book, error)

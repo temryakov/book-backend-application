@@ -5,7 +5,6 @@ import (
 
 	"github.com/temryakov/go-backend-book-app/book-service/api/controller"
 	"github.com/temryakov/go-backend-book-app/book-service/bootstrap"
-	"github.com/temryakov/go-backend-book-app/book-service/domain"
 	"github.com/temryakov/go-backend-book-app/book-service/repository"
 	"github.com/temryakov/go-backend-book-app/book-service/usecase"
 
@@ -15,7 +14,7 @@ import (
 
 func NewBookRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, group *gin.RouterGroup) {
 
-	sr := repository.NewBookRepository(db, domain.CollectionBook)
+	sr := repository.NewBookRepository(db)
 	sc := &controller.BookController{
 		BookUsecase: usecase.NewBookUsecase(sr, timeout),
 	}

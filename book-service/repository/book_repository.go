@@ -9,14 +9,12 @@ import (
 )
 
 type bookRepository struct {
-	database   *gorm.DB
-	collection string
+	database *gorm.DB
 }
 
-func NewBookRepository(database *gorm.DB, collection string) domain.BookRepository {
+func NewBookRepository(database *gorm.DB) domain.BookRepository {
 	return &bookRepository{
-		database:   database,
-		collection: collection,
+		database: database,
 	}
 }
 
