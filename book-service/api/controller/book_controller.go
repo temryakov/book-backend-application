@@ -36,7 +36,7 @@ func (u *BookController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.BookDataSerializator{
+	c.JSON(http.StatusOK, domain.BookResponse{
 		Message: "Book is successfully found! %)",
 		Data: domain.BookData{
 			ID:             book.ID,
@@ -66,7 +66,7 @@ func (u *BookController) Fetch(c *gin.Context) {
 		})
 	}
 
-	c.JSON(http.StatusOK, domain.BookDataArraySerializator{
+	c.JSON(http.StatusOK, domain.AllBookResponse{
 		Message: "Book list =P",
 		Data:    arr,
 	})

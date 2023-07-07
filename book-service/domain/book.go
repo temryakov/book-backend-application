@@ -13,6 +13,22 @@ type Book struct {
 	gorm.Model
 }
 
+type BookData struct {
+	ID             uint   `json:"id"`
+	Title          string `json:"title"`
+	Author         string `json:"author"`
+	ChaptersAmount uint   `json:"chapters_amount"`
+}
+type BookResponse struct {
+	Message string   `json:"message"`
+	Data    BookData `json:"data"`
+}
+
+type AllBookResponse struct {
+	Message string     `json:"message"`
+	Data    []BookData `json:"data"`
+}
+
 const (
 	CollectionBook = "Books"
 )
