@@ -26,8 +26,16 @@ func (u *SignupController) Create(c *gin.Context) {
 		})
 		return
 	}
+	err := u.SignupUsecase.Create(c, &user)
 
-	if err := u.SignupUsecase.Create(c, &user); err != nil {
+	if err == domain.ErrUserAlreadyExists {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponse{
+			Message: "User with this email address already exists. =(",
+		})
+		return
+	}
+
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}

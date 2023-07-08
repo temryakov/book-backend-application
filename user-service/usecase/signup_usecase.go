@@ -12,7 +12,7 @@ type signupUsecase struct {
 	contextTimeout time.Duration
 }
 
-func NewSignupUsecase(userRepository domain.UserRepository, timeout time.Duration) domain.UserRepository {
+func NewSignupUsecase(userRepository domain.UserRepository, timeout time.Duration) domain.SignupUsecase {
 	return &signupUsecase{
 		userRepository: userRepository,
 		contextTimeout: timeout,
@@ -22,5 +22,8 @@ func NewSignupUsecase(userRepository domain.UserRepository, timeout time.Duratio
 func (su *signupUsecase) Create(c context.Context, user *domain.User) error {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
+	if user, _ := su.userRepository.FetchByEmail(ctx, user.Email); user != nil {
+		return domain.ErrUserAlreadyExists
+	}
 	return su.userRepository.Create(ctx, user)
 }
