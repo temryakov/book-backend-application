@@ -15,4 +15,5 @@ type User struct {
 
 type UserRepository interface {
 	Create(c context.Context, user *User) error
+	FetchByEmail(c context.Context, email string) (*User, error)
 }
