@@ -4,8 +4,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/temryakov/go-backend-book-app/user-service/api/controller"
 	"github.com/temryakov/go-backend-book-app/user-service/bootstrap"
 	"github.com/temryakov/go-backend-book-app/user-service/repository"
+	"github.com/temryakov/go-backend-book-app/user-service/usecase"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +15,6 @@ func NewSignupRouter(config *bootstrap.Config, timeout time.Duration, db *gorm.D
 	ur := repository.NewUserRepository(db)
 	sc := controller.SignupController{
 		SignupUsecase: usecase.NewSignupUsecase(ur, timeout),
-		Env:           env,
 	}
-	group.POST("/signup", sc.Signup)
+	group.POST("/signup", sc.Create)
 }
