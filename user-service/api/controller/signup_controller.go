@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/temryakov/go-backend-book-app/user-service/domain"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type SignupController struct {
@@ -26,7 +27,19 @@ func (u *SignupController) Create(c *gin.Context) {
 		})
 		return
 	}
-	err := u.SignupUsecase.Create(c, &user)
+	encryptedPassword, err := bcrypt.GenerateFromPassword(
+		[]byte(user.Password),
+		bcrypt.DefaultCost,
+	)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponse{
+			Message: "Invalid password",
+		})
+	}
+
+	user.Password = string(encryptedPassword)
+
+	err = u.SignupUsecase.Create(c, &user)
 
 	if err == domain.ErrUserAlreadyExists {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponse{
