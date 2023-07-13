@@ -13,4 +13,5 @@ func Setup(config *bootstrap.Config, timeout time.Duration, db *gorm.DB, gin *gi
 
 	// Public APIs
 	NewSignupRouter(config, timeout, db, publicRouter)
+	NewLoginRouter(config, timeout, db, publicRouter)
 }
