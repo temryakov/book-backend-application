@@ -13,7 +13,7 @@ import (
 
 func NewSignupRouter(config *bootstrap.Config, timeout time.Duration, db *gorm.DB, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db)
-	sc := controller.SignupController{
+	sc := &controller.SignupController{
 		SignupUsecase: usecase.NewSignupUsecase(ur, timeout),
 	}
 	group.POST("/api/signup", sc.Create)
