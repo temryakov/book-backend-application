@@ -14,6 +14,8 @@ type Config struct {
 	DBPort         string `mapstructure:"DB_PORT"`
 	DBUser         string `mapstructure:"DB_USER"`
 	DBName         string `mapstructure:"DB_NAME"`
+	SecretKey      string `mapstructure:"ACCESS_TOKEN_SECRET"`
+	ExpiryHours    int    `mapstructure:"ACCESS_TOKEN_EXPIRY_HOURS"`
 }
 
 var (
