@@ -18,7 +18,7 @@ func (u *SignupController) Create(c *gin.Context) {
 	var user domain.User
 
 	if err := c.ShouldBind(&user); err != nil {
-		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
+		c.JSON(http.StatusBadRequest, domain.ErrBadRequest)
 		return
 	}
 	if _, err := mail.ParseAddress(user.Email); err != nil {
@@ -49,7 +49,7 @@ func (u *SignupController) Create(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		c.JSON(http.StatusInternalServerError, domain.ErrInternalServerError)
 		return
 	}
 
