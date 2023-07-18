@@ -27,6 +27,19 @@ func (u *SignupController) Create(c *gin.Context) {
 		})
 		return
 	}
+	err := domain.PasswordValidation(user.Password)
+	if err == domain.ErrShortPassword {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponse{
+			Message: "Too short password",
+		})
+		return
+	}
+	if err == domain.ErrLongPassword {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponse{
+			Message: "Too long password",
+		})
+		return
+	}
 	encryptedPassword, err := bcrypt.GenerateFromPassword(
 		[]byte(user.Password),
 		bcrypt.DefaultCost,
