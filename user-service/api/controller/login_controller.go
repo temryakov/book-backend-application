@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/temryakov/go-backend-book-app/user-service/bootstrap"
 	"github.com/temryakov/go-backend-book-app/user-service/domain"
-	"github.com/temryakov/go-backend-book-app/user-service/tokenutil"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -33,11 +32,11 @@ func (u *LoginController) Login(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: "Invalid credentials %/"})
 		return
 	}
-	accessToken, err := tokenutil.CreateAccessToken(user, u.Config.SecretKey, u.Config.ExpiryHours)
+	accessToken, err := u.LoginUsecase.CreateAccessToken(user, u.Config.SecretKey, u.Config.ExpiryHours)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.ErrInternalServerError)
 	}
-	refreshToken, err := tokenutil.CreateRefreshToken(user, u.Config.SecretKey, u.Config.ExpiryHours)
+	refreshToken, err := u.LoginUsecase.CreateRefreshToken(user, u.Config.SecretKey, u.Config.ExpiryHours)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.ErrInternalServerError)
 	}

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/temryakov/go-backend-book-app/user-service/domain"
+	"github.com/temryakov/go-backend-book-app/user-service/tokenutil"
 )
 
 type loginUsecase struct {
@@ -28,10 +29,10 @@ func (lu *loginUsecase) FetchByEmail(c context.Context, email string) (*domain.U
 	return lu.userRepository.FetchByEmail(ctx, email)
 }
 
-// func (lu *loginUsecase) CreateAccessToken(user *domain.User, secret string, expiry int) (accessToken string, err error) {
-// 	return tokenutil.CreateAccessToken(user, secret, expiry)
-// }
+func (lu *loginUsecase) CreateAccessToken(user *domain.User, secret string, expiry int) (accessToken string, err error) {
+	return tokenutil.CreateAccessToken(user, secret, expiry)
+}
 
-// func (lu *loginUsecase) CreateRefreshToken(user *domain.User, secret string, expiry int) (refreshToken string, err error) {
-// 	return tokenutil.CreateRefreshToken(user, secret, expiry)
-// }
+func (lu *loginUsecase) CreateRefreshToken(user *domain.User, secret string, expiry int) (refreshToken string, err error) {
+	return tokenutil.CreateRefreshToken(user, secret, expiry)
+}
