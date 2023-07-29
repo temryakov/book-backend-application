@@ -19,10 +19,10 @@ func NewBookRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, gr
 		BookUsecase: usecase.NewBookUsecase(sr, timeout),
 	}
 
-	group.GET("/book/:id", sc.FetchByID)
-	group.GET("/books", sc.Fetch)
-	group.POST("/book", sc.Create)
-	group.DELETE("/book/:id", sc.Delete)
-	group.PATCH("/book/:id", sc.Update)
+	group.GET("/:id", sc.FetchByID)
+	group.GET("/all", sc.Fetch)
+	group.POST("/", sc.Create)
+	group.DELETE("/:id", sc.Delete)
+	group.PATCH("/:id", sc.Update)
 
 }
