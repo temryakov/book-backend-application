@@ -9,7 +9,7 @@ import (
 )
 
 func Setup(config *bootstrap.Config, timeout time.Duration, db *gorm.DB, gin *gin.Engine) {
-	publicRouter := gin.Group("")
+	publicRouter := gin.Group("/api")
 
 	// Public APIs
 	NewSignupRouter(config, timeout, db, publicRouter)

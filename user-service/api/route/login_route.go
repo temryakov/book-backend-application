@@ -17,5 +17,5 @@ func NewLoginRouter(config *bootstrap.Config, timeout time.Duration, db *gorm.DB
 		LoginUsecase: usecase.NewLoginUsecase(ur, timeout),
 		Config:       config,
 	}
-	group.POST("/api/login", lc.Login)
+	group.POST("/login", lc.Login)
 }

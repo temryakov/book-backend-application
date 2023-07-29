@@ -16,5 +16,5 @@ func NewSignupRouter(config *bootstrap.Config, timeout time.Duration, db *gorm.D
 	sc := &controller.SignupController{
 		SignupUsecase: usecase.NewSignupUsecase(ur, timeout),
 	}
-	group.POST("/api/signup", sc.Create)
+	group.POST("/signup", sc.Create)
 }
