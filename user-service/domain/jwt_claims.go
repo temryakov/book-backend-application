@@ -1,7 +1,13 @@
 package domain
 
 import (
+	"errors"
+
 	"github.com/golang-jwt/jwt/v4"
+)
+
+var (
+	ErrInvalidToken = errors.New("invalid token")
 )
 
 type JwtCustomClaims struct {
