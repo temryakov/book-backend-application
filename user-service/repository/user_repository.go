@@ -31,3 +31,13 @@ func (r *userRepository) FetchByEmail(ctx context.Context, email string) (*domai
 	}
 	return &user, nil
 }
+func (r *userRepository) FetchByID(ctx context.Context, ID uint) (*domain.User, error) {
+
+	var user domain.User
+
+	err := r.database.WithContext(ctx).First(&user, "id = ?", ID).Error
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
