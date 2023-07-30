@@ -13,8 +13,8 @@ import (
 
 func NewProfileRouter(config *bootstrap.Config, timeout time.Duration, db *gorm.DB, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db)
-	sc := &controller.ProfileController{
+	pc := &controller.ProfileController{
 		ProfileUsecase: usecase.NewProfileUsecase(ur, timeout),
 	}
-	group.GET("/profile", sc.Create)
+	group.GET("/profile", pc.Fetch)
 }
