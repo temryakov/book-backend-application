@@ -13,9 +13,9 @@ type ProfileController struct {
 
 func (p *ProfileController) Fetch(c *gin.Context) {
 
-	var id uint
+	userId := c.GetUint("x-user-id")
 
-	user, err := p.ProfileUsecase.FetchByID(c, id)
+	user, err := p.ProfileUsecase.FetchByID(c, userId)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.ErrInternalServerError)

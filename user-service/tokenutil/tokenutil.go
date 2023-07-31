@@ -12,7 +12,7 @@ func CreateAccessToken(user *domain.User, secret string, expiry int) (string, er
 	exp := &jwt.NumericDate{Time: time.Now().Add(time.Hour * time.Duration(expiry))}
 	claims := &domain.JwtCustomClaims{
 		Name: user.Name,
-		ID:   string(rune(user.Model.ID)),
+		ID:   user.Model.ID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: exp,
 		},
@@ -27,7 +27,7 @@ func CreateAccessToken(user *domain.User, secret string, expiry int) (string, er
 
 func CreateRefreshToken(user *domain.User, secret string, expiry int) (string, error) {
 	claimsRefresh := &domain.JwtCustomRefreshClaims{
-		ID: string(rune(user.Model.ID)),
+		ID: user.Model.ID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: &jwt.NumericDate{Time: time.Now().Add(time.Hour * time.Duration(expiry))},
 		},
@@ -53,7 +53,7 @@ func IsAuthorized(requestToken string, secret string) (bool, error) {
 	return true, nil
 }
 
-func ExtractIDFromToken(requestToken string, secret string) (string, error) {
+func ExtractIDFromToken(requestToken string, secret string) (uint, error) {
 	token, err := jwt.Parse(requestToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -62,14 +62,14 @@ func ExtractIDFromToken(requestToken string, secret string) (string, error) {
 	})
 
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 
 	if !ok && !token.Valid {
-		return "", domain.ErrInvalidToken
+		return 0, domain.ErrInvalidToken
 	}
 
-	return claims["id"].(string), nil
+	return uint(claims["id"].(float64)), nil
 }
