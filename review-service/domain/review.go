@@ -1,6 +1,10 @@
 package domain
 
-import "gorm.io/gorm"
+import (
+	"context"
+
+	"gorm.io/gorm"
+)
 
 type Review struct {
 	BookId      uint
@@ -18,4 +22,20 @@ type ReviewResponse struct {
 	Rating       uint   `json:"rating"`
 	ReviewTitle  string `json:"review_title"`
 	ReviewText   string `json:"review_text"`
+}
+
+type ReviewRepository interface {
+	FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
+	FetchReview(c context.Context, ReviewID uint) (*Review, error)
+	CreateReview(c context.Context, review *Review, BookID uint) error
+	UpdateReview(c context.Context, review *Review, Model *Review) error
+	DeleteReview(c context.Context, ReviewID uint) error
+}
+
+type ReviewUsecase interface {
+	FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
+	FetchReview(c context.Context, ReviewID uint) (*Review, error)
+	CreateReview(c context.Context, review *Review, BookID uint) error
+	UpdateReview(c context.Context, review *Review, Model *Review) error
+	DeleteReview(c context.Context, ReviewID uint) error
 }
