@@ -7,11 +7,11 @@ import (
 )
 
 type Review struct {
-	BookId      uint
-	UserId      uint
-	Rating      uint
-	ReviewTitle string
-	ReviewText  string
+	BookId uint
+	UserId uint
+	Rating uint
+	Title  string
+	Text   string
 	gorm.Model
 }
 
