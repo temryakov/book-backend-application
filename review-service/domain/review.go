@@ -25,17 +25,17 @@ type ReviewResponse struct {
 }
 
 type ReviewRepository interface {
-	FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
+	// FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
 	FetchReview(c context.Context, ReviewID uint) (*Review, error)
-	CreateReview(c context.Context, review *Review, BookID uint) error
-	UpdateReview(c context.Context, review *Review, Model *Review) error
-	DeleteReview(c context.Context, ReviewID uint) error
+	// CreateReview(c context.Context, review *Review, BookID uint) error
+	// UpdateReview(c context.Context, review *Review, Model *Review) error
+	// DeleteReview(c context.Context, ReviewID uint) error
 }
 
 type ReviewUsecase interface {
-	FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
+	// FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
 	FetchReview(c context.Context, ReviewID uint) (*Review, error)
-	CreateReview(c context.Context, review *Review, BookID uint) error
-	UpdateReview(c context.Context, review *Review, Model *Review) error
-	DeleteReview(c context.Context, ReviewID uint) error
+	// CreateReview(c context.Context, review *Review, BookID uint) error
+	// UpdateReview(c context.Context, review *Review, Model *Review) error
+	// DeleteReview(c context.Context, ReviewID uint) error
 }

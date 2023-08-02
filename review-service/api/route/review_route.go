@@ -1,16 +1,26 @@
 package route
 
-// func NewBookRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, group *gin.RouterGroup) {
+import (
+	"time"
 
-// 	rr := repository.NewReviewRepository(db)
-// 	rc := &controller.ReviewController{
-// 		ReviewUsecase: usecase.NewReviewUsecase(rr, timeout),
-// 	}
+	"github.com/gin-gonic/gin"
+	"github.com/review-service/api/controller"
+	"github.com/review-service/bootstrap"
+	"github.com/review-service/repository"
+	"github.com/review-service/usecase"
+	"gorm.io/gorm"
+)
 
-// 	group.GET("/:id", rc.FetchByID)
-// 	group.GET("/all", rc.Fetch)
-// 	group.POST("/", rc.Create)
-// 	group.DELETE("/:id", rc.Delete)
-// 	group.PATCH("/:id", rc.Update)
+func NewReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, group *gin.RouterGroup) {
 
-// }
+	rr := repository.NewReviewRepository(db)
+	rc := &controller.ReviewController{
+		ReviewUsecase: usecase.NewReviewUsecase(rr, timeout),
+	}
+
+	group.GET("/:id", rc.FetchReview)
+	// group.GET("/all", rc.FetchAllReview)
+	// group.POST("/:bookId", rc.CreateReview)
+	// group.DELETE("/:id", rc.DeleteReview)
+	// group.PATCH("/:id", rc.UpdateReview)
+}
