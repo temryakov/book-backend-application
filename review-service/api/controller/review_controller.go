@@ -44,3 +44,31 @@ func (u *ReviewController) FetchReview(c *gin.Context) {
 		ReviewText:   review.Text,
 	})
 }
+
+func (u *ReviewController) DeleteReview(c *gin.Context) {
+
+	reviewId, err := strconv.ParseUint(c.Param("id"), 0, 16)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
+		return
+	}
+
+	err := u.ReviewUsecase.DeleteReview(c, uint(reviewId))
+
+	if err == gorm.ErrRecordNotFound {
+		c.JSON(http.StatusNotFound, domain.ErrorResponse{
+			Message: "Review is not found. =(",
+		})
+		return
+	}
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.SuccessfulMessage{
+		Message: "Successfully deleted. :=)",
+	})
+}
+}
