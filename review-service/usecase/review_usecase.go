@@ -24,3 +24,9 @@ func (ru *reviewUsecase) FetchReview(c context.Context, reviewId uint) (*domain.
 	defer cancel()
 	return ru.reviewRepository.FetchReview(ctx, reviewId)
 }
+
+func (ru *reviewUsecase) DeleteReview(c context.Context, reviewId uint) error {
+	ctx, cancel := context.WithTimeout(c, ru.contextTimeout)
+	defer cancel()
+	return ru.reviewRepository.DeleteReview(ctx, reviewId)
+}
