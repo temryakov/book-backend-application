@@ -29,7 +29,7 @@ type ReviewRepository interface {
 	FetchReview(c context.Context, ReviewID uint) (*Review, error)
 	// CreateReview(c context.Context, review *Review, BookID uint) error
 	// UpdateReview(c context.Context, review *Review, Model *Review) error
-	// DeleteReview(c context.Context, ReviewID uint) error
+	DeleteReview(c context.Context, ReviewID uint) error
 }
 
 type ReviewUsecase interface {
@@ -37,5 +37,5 @@ type ReviewUsecase interface {
 	FetchReview(c context.Context, ReviewID uint) (*Review, error)
 	// CreateReview(c context.Context, review *Review, BookID uint) error
 	// UpdateReview(c context.Context, review *Review, Model *Review) error
-	// DeleteReview(c context.Context, ReviewID uint) error
+	DeleteReview(c context.Context, ReviewID uint) error
 }
