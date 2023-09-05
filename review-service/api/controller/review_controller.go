@@ -71,4 +71,3 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 		Message: "Successfully deleted. :=)",
 	})
 }
-}
