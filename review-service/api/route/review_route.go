@@ -21,6 +21,6 @@ func NewReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, 
 	group.GET("/:id", rc.FetchReview)
 	// group.GET("/all", rc.FetchAllReview)
 	// group.POST("/:bookId", rc.CreateReview)
-	// group.DELETE("/:id", rc.DeleteReview)
+	group.DELETE("/:id", rc.DeleteReview)
 	// group.PATCH("/:id", rc.UpdateReview)
 }
