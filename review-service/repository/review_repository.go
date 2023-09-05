@@ -27,3 +27,13 @@ func (r *reviewRepository) FetchReview(ctx context.Context, reviewId uint) (*dom
 	}
 	return review, nil
 }
+
+func (r *reviewRepository) DeleteReview(ctx context.Context, reviewId uint) error {
+
+	var review *domain.Review
+
+	if err := r.database.WithContext(ctx).Delete(&review, reviewId).Error; err != nil {
+		return err
+	}
+	return nil
+}
