@@ -54,7 +54,7 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 		return
 	}
 
-	err := u.ReviewUsecase.DeleteReview(c, uint(reviewId))
+	err = u.ReviewUsecase.DeleteReview(c, uint(reviewId))
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.ErrorResponse{
