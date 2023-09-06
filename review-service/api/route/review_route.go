@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, group *gin.RouterGroup) {
+func NewPublicReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, group *gin.RouterGroup) {
 
 	rr := repository.NewReviewRepository(db)
 	rc := &controller.ReviewController{
@@ -20,7 +20,16 @@ func NewReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, 
 
 	group.GET("/:id", rc.FetchReview)
 	// group.GET("/all", rc.FetchAllReview)
-	// group.POST("/:bookId", rc.CreateReview)
+}
+
+func NewPrivateReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, group *gin.RouterGroup) {
+
+	rr := repository.NewReviewRepository(db)
+	rc := &controller.ReviewController{
+		ReviewUsecase: usecase.NewReviewUsecase(rr, timeout),
+	}
+
+	// group.POST("/:id", rc.CreateReview)
 	group.DELETE("/:id", rc.DeleteReview)
 	// group.PATCH("/:id", rc.UpdateReview)
 }
