@@ -8,6 +8,9 @@ type BookErr struct {
 	Error ErrorResponse
 }
 
-var BookNotFound = ErrorResponse{Message: "Book is not found. =("}
-var MessageBadRequest = ErrorResponse{Message: "Bad Request =/"}
-var MessageInternalServerError = ErrorResponse{Message: "...Oops."}
+var (
+	BookNotFound               = ErrorResponse{Message: "Book is not found. =("}
+	MessageBadRequest          = ErrorResponse{Message: "Bad Request =/"}
+	MessageInternalServerError = ErrorResponse{Message: "...Oops."}
+	MessageForbidden           = ErrorResponse{Message: "You don't have permission. %("}
+)
