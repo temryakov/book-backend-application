@@ -1,0 +1,18 @@
+version: '1'
+services:
+  book-service:
+    build:
+      context: ./book-service  
+    ports:
+      - "8080:8080" 
+
+  review-service:
+    build:
+      context: ./review-service 
+    ports:
+      - "8081:8081"
+  user-service:
+    build:
+      context: ./user-service
+    ports:
+      - "8082:8082"
