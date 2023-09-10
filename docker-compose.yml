@@ -2,17 +2,23 @@ version: '1'
 services:
   book-service:
     build:
-      context: ./book-service  
+      context: ./book-service
+      dockerfile: Dockerfile
     ports:
-      - "8080:8080" 
+      - "$PORT:$PORT"
+    env_file: .env
 
   review-service:
     build:
       context: ./review-service 
+      dockerfile: Dockerfile
     ports:
-      - "8081:8081"
+      - "$PORT:$PORT"
+    env_file: .env
   user-service:
     build:
       context: ./user-service
+      dockerfile: Dockerfile
     ports:
-      - "8082:8082"
+      - "$PORT:$PORT"
+    env_file: .env
