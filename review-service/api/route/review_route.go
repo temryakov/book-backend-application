@@ -29,7 +29,7 @@ func NewPrivateReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Dur
 		ReviewUsecase: usecase.NewReviewUsecase(rr, timeout),
 	}
 
-	// group.POST("/:id", rc.CreateReview)
+	group.POST("/", rc.CreateReview)
 	group.DELETE("/:id", rc.DeleteReview)
 	// group.PATCH("/:id", rc.UpdateReview)
 }
