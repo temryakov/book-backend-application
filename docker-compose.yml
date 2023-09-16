@@ -1,24 +1,33 @@
 version: '1'
 services:
+  book-postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: book_service
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+
   book-service:
     build:
       context: ./book-service
       dockerfile: Dockerfile
+    env_file: ./book-service/.env
     ports:
-      - "$PORT:$PORT"
-    env_file: .env
+      - "8080:8080"
+    depends_on:
+      - book-postgres
 
   review-service:
     build:
       context: ./review-service 
       dockerfile: Dockerfile
+    env_file: ./review-service/.env
     ports:
-      - "$PORT:$PORT"
-    env_file: .env
+      - "8082:8082"
   user-service:
     build:
       context: ./user-service
       dockerfile: Dockerfile
+    env_file: ./user-service/.env
     ports:
-      - "$PORT:$PORT"
-    env_file: .env
+      - "8081:8081"
