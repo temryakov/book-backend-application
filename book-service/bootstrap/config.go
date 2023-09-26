@@ -10,10 +10,10 @@ import (
 type Config struct {
 	ServerAddress  string `mapstructure:"SERVER_ADDRESS"`
 	ContextTimeout int    `mapstructure:"CONTEXT_TIMEOUT"`
-	DBHost         string `mapstructure:"DB_HOST"`
-	DBPort         string `mapstructure:"DB_PORT"`
-	DBUser         string `mapstructure:"DB_USER"`
-	DBName         string `mapstructure:"DB_NAME"`
+	DBHost         string `mapstructure:"POSTGRES_HOST"`
+	DBPort         string `mapstructure:"POSTGRES_PORT"`
+	DBUser         string `mapstructure:"POSTGRES_USER"`
+	DBName         string `mapstructure:"POSTGRES_DB"`
 }
 
 var (
