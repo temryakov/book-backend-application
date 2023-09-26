@@ -1,33 +1,18 @@
 version: '1'
 
 services:
-  postgres:
+  book-postgres:
     image: postgres:latest
     ports:
-      - "6432:5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: book_service
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-
-  app:
-    image: my-app-image
-    ports:
-      - "8080:8080"
-    environment:
-      POSTGRES_DB: localhost
-      POSTGRES_DB: book_service
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password
-
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_USER: user
-      DATABASE_PASSWORD: password
-      DATABASE_NAME: mydb
-    depends_on:
-      - postgres
-  book-service:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+  go-book-service:
+    image: go-book-service
     build:
       context: ./book-service
       dockerfile: Dockerfile
@@ -36,18 +21,3 @@ services:
       - "8090:8080"
     depends_on:
       - book-postgres
-
-  # review-service:
-  #   build:
-  #     context: ./review-service 
-  #     dockerfile: Dockerfile
-  #   env_file: ./review-service/.env
-  #   ports:
-  #     - "8082:8082"
-  # user-service:
-  #   build:
-  #     context: ./user-service
-  #     dockerfile: Dockerfile
-  #   env_file: ./user-service/.env
-  #   ports:
-  #     - "8081:8081"
