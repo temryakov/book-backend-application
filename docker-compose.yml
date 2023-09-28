@@ -1,23 +1,37 @@
 version: '1'
 
 services:
-  book-postgres:
+  go-book-postgres:
     image: postgres:latest
     ports:
       - "5432:5432"
     environment:
       POSTGRES_DB: book_service
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password
-      POSTGRES_HOST: localhost
+      POSTGRES_PASSWORD: sudeki12
+      POSTGRES_HOST: go-book-postgres
       POSTGRES_PORT: 5432
-  go-book-service:
+    networks: 
+      - test-network
+  book-service:
     image: go-book-service
     build:
       context: ./book-service
       dockerfile: Dockerfile
     env_file: ./book-service/.env
+    environment:
+      POSTGRES_DB: book_service
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: sudeki12
+      POSTGRES_HOST: go-book-postgres
+      POSTGRES_PORT: 5432
+    networks: 
+      - test-network
     ports:
-      - "8090:8080"
+      - "8080:8080"
     depends_on:
-      - book-postgres
+      - go-book-postgres
+
+networks: # явно объявленные сети
+  test-network:
+    driver: bridge
