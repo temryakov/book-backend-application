@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -47,6 +48,8 @@ func (u *ReviewController) FetchReview(c *gin.Context) {
 
 func (u *ReviewController) DeleteReview(c *gin.Context) {
 
+	userId := c.GetUint("x-user-id")
+
 	reviewId, err := strconv.ParseUint(c.Param("id"), 0, 16)
 
 	if err != nil {
@@ -54,7 +57,7 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 		return
 	}
 
-	err = u.ReviewUsecase.DeleteReview(c, uint(reviewId))
+	err = u.ReviewUsecase.DeleteReview(c, uint(reviewId), userId)
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.ErrorResponse{
@@ -62,6 +65,14 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 		})
 		return
 	}
+
+	if err == errors.New("user is not have permission to delete") {
+		c.JSON(http.StatusForbidden, domain.ErrorResponse{
+			Message: "You don't have permission to delete this review. %(",
+		})
+		return
+	}
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
@@ -69,5 +80,34 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 
 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
 		Message: "Successfully deleted. :=)",
+	})
+}
+
+func (u *ReviewController) CreateReview(c *gin.Context) {
+
+	userId := c.GetUint("x-user-id")
+
+	var request domain.ReviewRequest
+
+	if err := c.ShouldBind(&request); err != nil {
+		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
+		return
+	}
+
+	review := domain.Review{
+		BookId: request.BookId,
+		UserId: userId,
+		Rating: request.BookId,
+		Title:  request.Title,
+		Text:   request.Text,
+	}
+
+	if err := u.ReviewUsecase.CreateReview(c, &review); err != nil {
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.SuccessfulMessage{
+		Message: "Review created successfully! %)",
 	})
 }
