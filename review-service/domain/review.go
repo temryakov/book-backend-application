@@ -15,6 +15,13 @@ type Review struct {
 	gorm.Model
 }
 
+type ReviewRequest struct {
+	BookId uint   `json:"book_id"`
+	Rating uint   `json:"rating"`
+	Title  string `json:"title"`
+	Text   string `json:"text"`
+}
+
 type ReviewResponse struct {
 	BookAuthor   string `json:"book_author"`
 	BookTitle    string `json:"book_title"`
@@ -27,7 +34,7 @@ type ReviewResponse struct {
 type ReviewRepository interface {
 	// FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
 	FetchReview(c context.Context, ReviewID uint) (*Review, error)
-	// CreateReview(c context.Context, review *Review, BookID uint) error
+	CreateReview(c context.Context, review *Review) error
 	// UpdateReview(c context.Context, review *Review, Model *Review) error
 	DeleteReview(c context.Context, ReviewID uint) error
 }
@@ -35,7 +42,7 @@ type ReviewRepository interface {
 type ReviewUsecase interface {
 	// FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
 	FetchReview(c context.Context, ReviewID uint) (*Review, error)
-	// CreateReview(c context.Context, review *Review, BookID uint) error
+	CreateReview(c context.Context, review *Review) error
 	// UpdateReview(c context.Context, review *Review, Model *Review) error
-	DeleteReview(c context.Context, ReviewID uint) error
+	DeleteReview(c context.Context, ReviewID uint, UserID uint) error
 }
