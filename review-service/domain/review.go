@@ -16,10 +16,10 @@ type Review struct {
 }
 
 type ReviewRequest struct {
-	BookId uint   `json:"book_id"`
-	Rating uint   `json:"rating"`
-	Title  string `json:"title"`
-	Text   string `json:"text"`
+	BookId uint   `json:"book_id" binding:"required"`
+	Rating uint   `json:"rating" binding:"required"`
+	Title  string `json:"title" binding:"required"`
+	Text   string `json:"text" binding:"required"`
 }
 
 type ReviewResponse struct {
@@ -31,18 +31,24 @@ type ReviewResponse struct {
 	ReviewText   string `json:"review_text"`
 }
 
+type ReviewQuery struct {
+	BookId uint
+	UserId uint
+	ID     uint
+}
+
 type ReviewRepository interface {
 	// FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
-	FetchReview(c context.Context, ReviewID uint) (*Review, error)
+	FetchReview(c context.Context, conditions *ReviewQuery) (*Review, error)
 	CreateReview(c context.Context, review *Review) error
 	// UpdateReview(c context.Context, review *Review, Model *Review) error
-	DeleteReview(c context.Context, ReviewID uint) error
+	// DeleteReview(c context.Context, ReviewID uint) error
 }
 
 type ReviewUsecase interface {
 	// FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
-	FetchReview(c context.Context, ReviewID uint) (*Review, error)
+	FetchReview(c context.Context, conditions *ReviewQuery) (*Review, error)
 	CreateReview(c context.Context, review *Review) error
 	// UpdateReview(c context.Context, review *Review, Model *Review) error
-	DeleteReview(c context.Context, ReviewID uint, UserID uint) error
+	// DeleteReview(c context.Context, ReviewID uint, UserID uint) error
 }
