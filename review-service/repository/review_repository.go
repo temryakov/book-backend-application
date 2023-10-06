@@ -18,17 +18,14 @@ func NewReviewRepository(database *gorm.DB) domain.ReviewRepository {
 	}
 }
 
-func (rr *reviewRepository) FetchReview(ctx context.Context, conditions *domain.Review) (*domain.Review, error) {
+func (rr *reviewRepository) FetchReview(ctx context.Context, conditions *domain.ReviewQuery) (*domain.Review, error) {
 
-	var review *domain.Review
+	var review domain.Review
 
-	if err := rr.database.WithContext(ctx).Find(&review, conditions).Error; err != nil {
+	if err := rr.database.WithContext(ctx).Where(conditions).First(&review).Error; err != nil {
 		return nil, err
 	}
-	// if err := rr.database.WithContext(ctx).First(&review, reviewId).Error; err != nil {
-	// 	return nil, err
-	// }
-	return review, nil
+	return &review, nil
 }
 
 func (rr *reviewRepository) CreateReview(ctx context.Context, review *domain.Review) error {

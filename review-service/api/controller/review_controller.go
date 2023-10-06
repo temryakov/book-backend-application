@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 
@@ -23,7 +22,11 @@ func (u *ReviewController) FetchReview(c *gin.Context) {
 		return
 	}
 
-	review, err := u.ReviewUsecase.FetchReview(c, uint(reviewId))
+	query := domain.ReviewQuery{
+		ID: uint(reviewId),
+	}
+
+	review, err := u.ReviewUsecase.FetchReview(c, &query)
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.ErrorResponse{
@@ -46,42 +49,42 @@ func (u *ReviewController) FetchReview(c *gin.Context) {
 	})
 }
 
-func (u *ReviewController) DeleteReview(c *gin.Context) {
+// func (u *ReviewController) DeleteReview(c *gin.Context) {
 
-	userId := c.GetUint("x-user-id")
+// 	userId := c.GetUint("x-user-id")
 
-	reviewId, err := strconv.ParseUint(c.Param("id"), 0, 16)
+// 	reviewId, err := strconv.ParseUint(c.Param("id"), 0, 16)
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
-		return
-	}
+// 	if err != nil {
+// 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
+// 		return
+// 	}
 
-	err = u.ReviewUsecase.DeleteReview(c, uint(reviewId), userId)
+// 	err = u.ReviewUsecase.DeleteReview(c, uint(reviewId), userId)
 
-	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.ErrorResponse{
-			Message: "Review is not found. =(",
-		})
-		return
-	}
+// 	if err == gorm.ErrRecordNotFound {
+// 		c.JSON(http.StatusNotFound, domain.ErrorResponse{
+// 			Message: "Review is not found. =(",
+// 		})
+// 		return
+// 	}
 
-	if err == errors.New("user is not have permission to delete") {
-		c.JSON(http.StatusForbidden, domain.ErrorResponse{
-			Message: "You don't have permission to delete this review. %(",
-		})
-		return
-	}
+// 	if err == errors.New("user is not have permission to delete") {
+// 		c.JSON(http.StatusForbidden, domain.ErrorResponse{
+// 			Message: "You don't have permission to delete this review. %(",
+// 		})
+// 		return
+// 	}
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
-		return
-	}
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+// 		return
+// 	}
 
-	c.JSON(http.StatusOK, domain.SuccessfulMessage{
-		Message: "Successfully deleted. :=)",
-	})
-}
+// 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
+// 		Message: "Successfully deleted. :=)",
+// 	})
+// }
 
 func (u *ReviewController) CreateReview(c *gin.Context) {
 
@@ -97,9 +100,26 @@ func (u *ReviewController) CreateReview(c *gin.Context) {
 	review := domain.Review{
 		BookId: request.BookId,
 		UserId: userId,
-		Rating: request.BookId,
+		Rating: request.Rating,
 		Title:  request.Title,
 		Text:   request.Text,
+	}
+
+	fetchedReview, err := u.ReviewUsecase.FetchReview(c, &domain.ReviewQuery{
+		BookId: request.BookId,
+		UserId: userId,
+	})
+
+	if err != nil && err != gorm.ErrRecordNotFound {
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
+
+	if fetchedReview != nil {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponse{
+			Message: "Review already exist!",
+		})
+		return
 	}
 
 	if err := u.ReviewUsecase.CreateReview(c, &review); err != nil {
