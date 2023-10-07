@@ -49,42 +49,56 @@ func (u *ReviewController) FetchReview(c *gin.Context) {
 	})
 }
 
-// func (u *ReviewController) DeleteReview(c *gin.Context) {
+func (u *ReviewController) DeleteReview(c *gin.Context) {
 
-// 	userId := c.GetUint("x-user-id")
+	reviewId, err := strconv.ParseUint(c.Param("id"), 0, 16)
 
-// 	reviewId, err := strconv.ParseUint(c.Param("id"), 0, 16)
+	userId := c.GetUint("x-user-id")
 
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
-// 		return
-// 	}
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
+		return
+	}
 
-// 	err = u.ReviewUsecase.DeleteReview(c, uint(reviewId), userId)
+	query := domain.ReviewQuery{
+		ID: uint(reviewId),
+	}
 
-// 	if err == gorm.ErrRecordNotFound {
-// 		c.JSON(http.StatusNotFound, domain.ErrorResponse{
-// 			Message: "Review is not found. =(",
-// 		})
-// 		return
-// 	}
+	review, err := u.ReviewUsecase.FetchReview(c, &query)
 
-// 	if err == errors.New("user is not have permission to delete") {
-// 		c.JSON(http.StatusForbidden, domain.ErrorResponse{
-// 			Message: "You don't have permission to delete this review. %(",
-// 		})
-// 		return
-// 	}
+	if err == gorm.ErrRecordNotFound {
+		c.JSON(http.StatusNotFound, domain.ErrorResponse{
+			Message: "Review is not found. =(",
+		})
+		return
+	}
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
 
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
-// 		return
-// 	}
+	if userId != review.UserId {
+		c.JSON(http.StatusForbidden, domain.ErrorResponse{
+			Message: "You can not delete this review.",
+		})
+		return
+	}
 
-// 	c.JSON(http.StatusOK, domain.SuccessfulMessage{
-// 		Message: "Successfully deleted. :=)",
-// 	})
-// }
+	err = u.ReviewUsecase.DeleteReview(c, uint(reviewId))
+
+	if err == gorm.ErrRecordNotFound {
+		c.JSON(http.StatusNotFound, domain.BookNotFound)
+		return
+	}
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.SuccessfulMessage{
+		Message: "Review successfully deleted",
+	})
+}
 
 func (u *ReviewController) CreateReview(c *gin.Context) {
 
