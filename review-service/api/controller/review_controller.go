@@ -105,7 +105,7 @@ func (u *ReviewController) CreateReview(c *gin.Context) {
 		Text:   request.Text,
 	}
 
-	fetchedReview, err := u.ReviewUsecase.FetchReview(c, &domain.ReviewQuery{
+	_, err := u.ReviewUsecase.FetchReview(c, &domain.ReviewQuery{
 		BookId: request.BookId,
 		UserId: userId,
 	})
@@ -115,7 +115,7 @@ func (u *ReviewController) CreateReview(c *gin.Context) {
 		return
 	}
 
-	if fetchedReview != nil {
+	if err == nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponse{
 			Message: "Review already exist!",
 		})
