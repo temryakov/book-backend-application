@@ -119,24 +119,15 @@ func (u *ReviewController) CreateReview(c *gin.Context) {
 		Text:   request.Text,
 	}
 
-	_, err := u.ReviewUsecase.FetchReview(c, &domain.ReviewQuery{
-		BookId: request.BookId,
-		UserId: userId,
-	})
+	err := u.ReviewUsecase.CreateReview(c, &review)
 
-	if err != nil && err != gorm.ErrRecordNotFound {
-		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
-		return
-	}
-
-	if err == nil {
+	if err == domain.ErrReviewIsExist {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponse{
 			Message: "Review already exist!",
 		})
 		return
 	}
-
-	if err := u.ReviewUsecase.CreateReview(c, &review); err != nil {
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}

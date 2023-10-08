@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/review-service/domain"
+	"gorm.io/gorm"
 )
 
 type reviewUsecase struct {
@@ -27,7 +28,24 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 
 func (ru *reviewUsecase) CreateReview(c context.Context, review *domain.Review) error {
 	ctx, cancel := context.WithTimeout(c, ru.contextTimeout)
+
+	query := domain.ReviewQuery{
+		BookId: review.BookId,
+		UserId: review.UserId,
+	}
+
 	defer cancel()
+
+	_, err := ru.reviewRepository.FetchReview(ctx, &query)
+
+	if err == nil {
+		cancel()
+		return domain.ErrReviewIsExist
+	}
+	if err != nil && err != gorm.ErrRecordNotFound {
+		cancel()
+		return err
+	}
 	return ru.reviewRepository.CreateReview(ctx, review)
 }
 
