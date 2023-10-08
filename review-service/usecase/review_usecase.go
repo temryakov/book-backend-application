@@ -39,11 +39,9 @@ func (ru *reviewUsecase) CreateReview(c context.Context, review *domain.Review) 
 	_, err := ru.reviewRepository.FetchReview(ctx, &query)
 
 	if err == nil {
-		cancel()
 		return domain.ErrReviewIsExist
 	}
 	if err != nil && err != gorm.ErrRecordNotFound {
-		cancel()
 		return err
 	}
 	return ru.reviewRepository.CreateReview(ctx, review)
