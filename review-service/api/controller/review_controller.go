@@ -29,9 +29,7 @@ func (u *ReviewController) FetchReview(c *gin.Context) {
 	review, err := u.ReviewUsecase.FetchReview(c, &query)
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.ErrorResponse{
-			Message: "Review is not found. =(",
-		})
+		c.JSON(http.StatusNotFound, domain.ReviewNotFound)
 		return
 	}
 	if err != nil {
@@ -67,9 +65,7 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 	review, err := u.ReviewUsecase.FetchReview(c, &query)
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.ErrorResponse{
-			Message: "Review is not found. =(",
-		})
+		c.JSON(http.StatusNotFound, domain.ReviewNotFound)
 		return
 	}
 	if err != nil {
@@ -87,7 +83,7 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 	err = u.ReviewUsecase.DeleteReview(c, uint(reviewId))
 
 	if err == gorm.ErrRecordNotFound {
-		c.JSON(http.StatusNotFound, domain.BookNotFound)
+		c.JSON(http.StatusNotFound, domain.ReviewNotFound)
 		return
 	}
 	if err != nil {
