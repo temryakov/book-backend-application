@@ -9,7 +9,7 @@ type BookErr struct {
 }
 
 var (
-	BookNotFound               = ErrorResponse{Message: "Book is not found. =("}
+	ReviewNotFound             = ErrorResponse{Message: "Review is not found. =("}
 	MessageBadRequest          = ErrorResponse{Message: "Bad Request =/"}
 	MessageInternalServerError = ErrorResponse{Message: "...Oops."}
 	MessageForbidden           = ErrorResponse{Message: "You don't have permission. %("}
