@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package book;
+
+service Book {
+    rpc Do(Request) returns (Response) {}
+}
+
+message Request {
+    int id = 1;
+}
+
+message Response {
+    string title = 1;
+    string author = 2;
+
+}
