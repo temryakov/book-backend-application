@@ -1,5 +1,6 @@
 # Go Backend Book Application
 
-This project is a microservices architecture application built using the Go language. Conceptually, the application will consist of an Auth Service for authorization, authentication, and user storage, Review Service, as well as a Book Service. This project will evolve along with my learning and growth.
+This project is an application built on a microservices architecture using the Go language. Conceptually, the application consists of an Auth Service for handling authorization, authentication, and user storage, a Review Service, and a Book Service. These microservices communicate with each other through gRPC. This project will evolve alongside my learning and professional growth.
 
-Please feel free to leave your comments if you notice any weak points or questionable design decisions related to architecture or code. Thank you!
+Please feel free to leave your comments if you notice any weak points or have questions about architectural or code design decisions. Thank you!
+
