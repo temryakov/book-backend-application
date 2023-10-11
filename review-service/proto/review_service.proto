@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package review_service;
+
+import "messages/entity_messages.proto";
+
+service ReviewService {
+    rpc GetBook(review_service.entity.GetBookRequest)
+        returns (review_service.entity.GetBookResponse);
+    rpc GetUser(review_service.entity.GetUserRequest)
+        returns (review_service.entity.GetUserResponse);
+}
