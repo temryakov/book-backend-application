@@ -25,6 +25,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/review-service/domain"
 	pb "github.com/review-service/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -50,10 +51,6 @@ import (
 
 // Package main implements a client for Greeter service.
 
-const (
-	defaultName = "world"
-)
-
 var (
 	addr = flag.String("addr", "localhost:50051", "the address to connect to")
 )
@@ -76,7 +73,14 @@ func main() {
 
 	defer cancel()
 
-	book, err := c.GetBook(ctx, &pb.GetBookRequest{Id: 0})
+	GetBookRequest(ctx, c, 1)
+	GetUserRequest(ctx, c, 1)
+
+}
+
+func GetBookRequest(ctx context.Context, conn pb.ReviewServiceClient, id uint) *domain.BookInfo {
+
+	book, err := conn.GetBook(ctx, &pb.GetBookRequest{Id: int32(id)})
 
 	if err != nil {
 		log.Fatalf("could not receive: %v", err)
@@ -84,11 +88,22 @@ func main() {
 	log.Printf("Received title: %s", book.GetTitle())
 	log.Printf("Received author: %s", book.GetAuthor())
 
-	user, err := c.GetUser(ctx, &pb.GetUserRequest{Id: 0})
+	return &domain.BookInfo{
+		Title:  book.GetTitle(),
+		Author: book.GetAuthor(),
+	}
+}
+
+func GetUserRequest(ctx context.Context, conn pb.ReviewServiceClient, id uint) *domain.UserInfo {
+
+	user, err := conn.GetUser(ctx, &pb.GetUserRequest{Id: int32(id)})
 
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		log.Fatalf("could not receive: %v", err)
 	}
-	log.Printf("Received: %s", user.GetName())
+	log.Printf("Received name: %s", user.GetName())
 
+	return &domain.UserInfo{
+		Name: user.GetName(),
+	}
 }
