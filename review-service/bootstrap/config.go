@@ -8,14 +8,14 @@ import (
 )
 
 type Config struct {
-	ServerAddress  string `mapstructure:"SERVER_ADDRESS"`
-	ContextTimeout int    `mapstructure:"CONTEXT_TIMEOUT"`
-	DBHost         string `mapstructure:"POSTGRES_HOST"`
-	DBPort         string `mapstructure:"POSTGRES_PORT"`
-	DBUser         string `mapstructure:"POSTGRES_USER"`
-	DBName         string `mapstructure:"POSTGRES_DB"`
-	SecretKey      string `mapstructure:"ACCESS_TOKEN_SECRET"`
-	GRPCPort       int    `mapstructure:"GRPC_PORT"`
+	ServerAddress     string `mapstructure:"SERVER_ADDRESS"`
+	ContextTimeout    int    `mapstructure:"CONTEXT_TIMEOUT"`
+	DBHost            string `mapstructure:"POSTGRES_HOST"`
+	DBPort            string `mapstructure:"POSTGRES_PORT"`
+	DBUser            string `mapstructure:"POSTGRES_USER"`
+	DBName            string `mapstructure:"POSTGRES_DB"`
+	SecretKey         string `mapstructure:"ACCESS_TOKEN_SECRET"`
+	GRPCClientAddress int    `mapstructure:"GRPC_CLIENT_ADDRESS"`
 }
 
 var (
