@@ -15,6 +15,7 @@ type Config struct {
 	DBUser         string `mapstructure:"POSTGRES_USER"`
 	DBName         string `mapstructure:"POSTGRES_DB"`
 	SecretKey      string `mapstructure:"ACCESS_TOKEN_SECRET"`
+	GRPCPort       string `mapstructure:"GRPC_PORT"`
 }
 
 var (
