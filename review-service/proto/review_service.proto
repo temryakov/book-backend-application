@@ -1,12 +1,24 @@
 syntax = "proto3";
 
-package review_service;
+package review;
 
-import "messages/entity_messages.proto";
+option go_package = "github.com/temryakov/go-backend-book-app/review-service";
+
+message GetBookRequest {
+    int32 id = 1;
+}
+message GetBookResponse {
+    string title = 1;
+    string author = 2;
+}
+message GetUserRequest {
+    int32 id = 1;
+}
+message GetUserResponse {
+    string name = 1;
+}
 
 service ReviewService {
-    rpc GetBook(review_service.entity.GetBookRequest)
-        returns (review_service.entity.GetBookResponse);
-    rpc GetUser(review_service.entity.GetUserRequest)
-        returns (review_service.entity.GetUserResponse);
+    rpc GetBook(GetBookRequest) returns (GetBookResponse);
+    rpc GetUser(GetUserRequest) returns (GetUserResponse);
 }
