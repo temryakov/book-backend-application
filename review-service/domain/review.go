@@ -37,6 +37,15 @@ type ReviewQuery struct {
 	ID     uint
 }
 
+type BookInfo struct {
+	Title  string
+	Author string
+}
+
+type UserInfo struct {
+	Name string
+}
+
 type ReviewRepository interface {
 	// FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
 	FetchReview(c context.Context, conditions *ReviewQuery) (*Review, error)
