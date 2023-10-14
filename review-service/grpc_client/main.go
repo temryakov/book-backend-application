@@ -55,38 +55,13 @@ var (
 	addr = flag.String("addr", "localhost:50051", "the address to connect to")
 )
 
-func main() {
-	flag.Parse()
-
-	// Set up a connection to the server.
-
-	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
-
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-	defer conn.Close()
-	c := pb.NewReviewServiceClient(conn)
-
-	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-
-	defer cancel()
-
-	GetBookRequest(ctx, c, 1)
-	GetUserRequest(ctx, c, 1)
-
-}
-
-func GetBookRequest(ctx context.Context, conn pb.ReviewServiceClient, id uint) *domain.BookInfo {
+func GetBookRequest(ctx context.Context, conn pb.BookServiceClient, id uint) *domain.BookInfo {
 
 	book, err := conn.GetBook(ctx, &pb.GetBookRequest{Id: int32(id)})
 
 	if err != nil {
 		log.Fatalf("could not receive: %v", err)
 	}
-	log.Printf("Received title: %s", book.GetTitle())
-	log.Printf("Received author: %s", book.GetAuthor())
 
 	return &domain.BookInfo{
 		Title:  book.GetTitle(),
@@ -94,7 +69,7 @@ func GetBookRequest(ctx context.Context, conn pb.ReviewServiceClient, id uint) *
 	}
 }
 
-func GetUserRequest(ctx context.Context, conn pb.ReviewServiceClient, id uint) *domain.UserInfo {
+func GetUserRequest(ctx context.Context, conn pb.UserServiceClient, id uint) *domain.UserInfo {
 
 	user, err := conn.GetUser(ctx, &pb.GetUserRequest{Id: int32(id)})
 
@@ -106,4 +81,30 @@ func GetUserRequest(ctx context.Context, conn pb.ReviewServiceClient, id uint) *
 	return &domain.UserInfo{
 		Name: user.GetName(),
 	}
+}
+
+func main() {
+	flag.Parse()
+
+	// Set up a connection to the server.
+
+	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	c := pb.NewBookServiceClient(conn)
+
+	// Contact the server and print out its response.
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+
+	defer cancel()
+
+	book := GetBookRequest(ctx, c, 30)
+	// GetUserRequest(ctx, c, 1)
+
+	log.Printf("Received structured title: %s", book.Title)
+	log.Printf("Received structured author: %s", book.Author)
+
 }
