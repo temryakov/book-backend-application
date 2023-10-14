@@ -19,89 +19,89 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ReviewService_GetBook_FullMethodName = "/book.ReviewService/GetBook"
+	BookService_GetBook_FullMethodName = "/go_book_app.BookService/GetBook"
 )
 
-// ReviewServiceClient is the client API for ReviewService service.
+// BookServiceClient is the client API for BookService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ReviewServiceClient interface {
+type BookServiceClient interface {
 	GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error)
 }
 
-type reviewServiceClient struct {
+type bookServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewReviewServiceClient(cc grpc.ClientConnInterface) ReviewServiceClient {
-	return &reviewServiceClient{cc}
+func NewBookServiceClient(cc grpc.ClientConnInterface) BookServiceClient {
+	return &bookServiceClient{cc}
 }
 
-func (c *reviewServiceClient) GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error) {
+func (c *bookServiceClient) GetBook(ctx context.Context, in *GetBookRequest, opts ...grpc.CallOption) (*GetBookResponse, error) {
 	out := new(GetBookResponse)
-	err := c.cc.Invoke(ctx, ReviewService_GetBook_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, BookService_GetBook_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ReviewServiceServer is the server API for ReviewService service.
-// All implementations must embed UnimplementedReviewServiceServer
+// BookServiceServer is the server API for BookService service.
+// All implementations must embed UnimplementedBookServiceServer
 // for forward compatibility
-type ReviewServiceServer interface {
+type BookServiceServer interface {
 	GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error)
-	mustEmbedUnimplementedReviewServiceServer()
+	mustEmbedUnimplementedBookServiceServer()
 }
 
-// UnimplementedReviewServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedReviewServiceServer struct {
+// UnimplementedBookServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedBookServiceServer struct {
 }
 
-func (UnimplementedReviewServiceServer) GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error) {
+func (UnimplementedBookServiceServer) GetBook(context.Context, *GetBookRequest) (*GetBookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
 }
-func (UnimplementedReviewServiceServer) mustEmbedUnimplementedReviewServiceServer() {}
+func (UnimplementedBookServiceServer) mustEmbedUnimplementedBookServiceServer() {}
 
-// UnsafeReviewServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ReviewServiceServer will
+// UnsafeBookServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to BookServiceServer will
 // result in compilation errors.
-type UnsafeReviewServiceServer interface {
-	mustEmbedUnimplementedReviewServiceServer()
+type UnsafeBookServiceServer interface {
+	mustEmbedUnimplementedBookServiceServer()
 }
 
-func RegisterReviewServiceServer(s grpc.ServiceRegistrar, srv ReviewServiceServer) {
-	s.RegisterService(&ReviewService_ServiceDesc, srv)
+func RegisterBookServiceServer(s grpc.ServiceRegistrar, srv BookServiceServer) {
+	s.RegisterService(&BookService_ServiceDesc, srv)
 }
 
-func _ReviewService_GetBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _BookService_GetBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetBookRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ReviewServiceServer).GetBook(ctx, in)
+		return srv.(BookServiceServer).GetBook(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ReviewService_GetBook_FullMethodName,
+		FullMethod: BookService_GetBook_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ReviewServiceServer).GetBook(ctx, req.(*GetBookRequest))
+		return srv.(BookServiceServer).GetBook(ctx, req.(*GetBookRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ReviewService_ServiceDesc is the grpc.ServiceDesc for ReviewService service.
+// BookService_ServiceDesc is the grpc.ServiceDesc for BookService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ReviewService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "book.ReviewService",
-	HandlerType: (*ReviewServiceServer)(nil),
+var BookService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "go_book_app.BookService",
+	HandlerType: (*BookServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetBook",
-			Handler:    _ReviewService_GetBook_Handler,
+			Handler:    _BookService_GetBook_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
