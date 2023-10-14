@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package review;
+package go_book_app;
 
 option go_package = "github.com/temryakov/go-backend-book-app/review-service";
 
@@ -18,7 +18,9 @@ message GetUserResponse {
     string name = 1;
 }
 
-service ReviewService {
+service BookService {
     rpc GetBook(GetBookRequest) returns (GetBookResponse);
+}
+service UserService {
     rpc GetUser(GetUserRequest) returns (GetUserResponse);
 }
