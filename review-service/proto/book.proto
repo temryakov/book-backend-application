@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package go_book_app;
+
+option go_package = "github.com/temryakov/go-backend-book-app/review-service";
+
+message GetBookRequest {
+    int32 id = 1;
+}
+message GetBookResponse {
+    string title = 1;
+    string author = 2;
+}
+
+service BookService {
+    rpc GetBook(GetBookRequest) returns (GetBookResponse);
+}
