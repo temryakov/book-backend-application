@@ -5,6 +5,8 @@ import (
 	"strconv"
 
 	"github.com/temryakov/go-backend-book-app/book-service/domain"
+	review_proto "github.com/temryakov/go-backend-book-app/book-service/proto"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -33,6 +35,24 @@ func (u *BookController) FetchByID(c *gin.Context) {
 	}
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
+		return
+	}
+
+	protoBook := &review_proto.GetBookResponse{
+		Title:  book.Title,
+		Author: book.Author,
+	}
+
+	if c.GetHeader("Accept") == "application/x-protobuf" {
+
+		data, err := proto.Marshal(protoBook)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize book data"})
+			return
+		}
+
+		c.Data(http.StatusOK, "application/x-protobuf", data)
 		return
 	}
 
