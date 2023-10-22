@@ -56,7 +56,7 @@ type ReviewRepository interface {
 
 type ReviewUsecase interface {
 	// FetchAllReview(c context.Context, BookID uint) (*[]Review, error)
-	FetchReview(c context.Context, conditions *ReviewQuery) (*Review, error)
+	FetchReview(c context.Context, conditions *ReviewQuery) (*ReviewResponse, error)
 	CreateReview(c context.Context, review *Review) error
 	// UpdateReview(c context.Context, review *Review, Model *Review) error
 	DeleteReview(c context.Context, ReviewID uint) error

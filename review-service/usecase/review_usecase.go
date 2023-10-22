@@ -11,7 +11,9 @@ import (
 
 	"review-service/domain"
 
-	review_proto "github.com/temryakov/go-backend-book-app/review-proto"
+	rp "review-service/proto"
+
+	"google.golang.org/protobuf/proto"
 	"gorm.io/gorm"
 )
 
@@ -27,7 +29,7 @@ func NewReviewUsecase(reviewRepository domain.ReviewRepository, timeout time.Dur
 	}
 }
 
-func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.ReviewQuery) (*domain.Review, error) {
+func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.ReviewQuery) (*domain.ReviewResponse, error) {
 	ctx, cancel := context.WithTimeout(c, ru.contextTimeout)
 	defer cancel()
 
@@ -59,15 +61,28 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 		return nil, err
 	}
 
-	log.Print(body)
+	bookInfo := &rp.GetBookResponse{}
 
-	review_proto.GetBookReq
+	err = proto.Unmarshal(body, bookInfo)
+	if err != nil {
+		fmt.Println("Error unmarshalling protobuf:", err)
+		return nil, err
+	}
+
+	log.Print(bookInfo)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return review, nil
+	return &domain.ReviewResponse{
+		BookAuthor:   bookInfo.GetAuthor(),
+		BookTitle:    bookInfo.GetTitle(),
+		ReviewAuthor: "Test Test",
+		Rating:       review.Rating,
+		ReviewTitle:  review.Title,
+		ReviewText:   review.Text,
+	}, nil
 }
 
 func (ru *reviewUsecase) CreateReview(c context.Context, review *domain.Review) error {
