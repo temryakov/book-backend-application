@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"review-service/domain"
+
 	"github.com/gin-gonic/gin"
-	"github.com/review-service/domain"
 	"gorm.io/gorm"
 )
 

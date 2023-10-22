@@ -4,9 +4,10 @@ import (
 	"net/http"
 	"strings"
 
+	"review-service/domain"
+	"review-service/tokenutil"
+
 	"github.com/gin-gonic/gin"
-	"github.com/review-service/domain"
-	"github.com/review-service/tokenutil"
 )
 
 func AuthMiddleware(secret string) gin.HandlerFunc {

@@ -3,9 +3,10 @@ package main
 import (
 	"time"
 
+	"review-service/api/route"
+	"review-service/bootstrap"
+
 	"github.com/gin-gonic/gin"
-	"github.com/review-service/api/route"
-	"github.com/review-service/bootstrap"
 )
 
 func main() {

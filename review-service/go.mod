@@ -1,4 +1,4 @@
-module github.com/review-service
+module review-service
 
 go 1.20
 

@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/review-service/domain"
+	"review-service/domain"
 
 	"gorm.io/gorm"
 )

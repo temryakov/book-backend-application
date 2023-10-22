@@ -3,9 +3,10 @@ package route
 import (
 	"time"
 
+	"review-service/api/middleware"
+	"review-service/bootstrap"
+
 	"github.com/gin-gonic/gin"
-	"github.com/review-service/api/middleware"
-	"github.com/review-service/bootstrap"
 	"gorm.io/gorm"
 )
 

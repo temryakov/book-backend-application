@@ -3,8 +3,9 @@ package tokenutil
 import (
 	"fmt"
 
+	"review-service/domain"
+
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/review-service/domain"
 )
 
 func IsAuthorized(requestToken string, secret string) (bool, error) {
