@@ -15,6 +15,7 @@ func Setup(config *bootstrap.Config, timeout time.Duration, db *gorm.DB, gin *gi
 	publicRouter := gin.Group("/api")
 	NewSignupRouter(config, timeout, db, publicRouter)
 	NewLoginRouter(config, timeout, db, publicRouter)
+	NewUserRouter(config, timeout, db, publicRouter)
 
 	// Protected APIs
 	protectedRouter := gin.Group("/api")
