@@ -3,8 +3,9 @@ package tokenutil
 import (
 	"fmt"
 
+	"book-service/domain"
+
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/temryakov/go-backend-book-app/book-service/domain"
 )
 
 func IsAuthorized(requestToken string, secret string) (bool, error) {

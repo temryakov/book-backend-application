@@ -11,6 +11,7 @@ import (
 
 	"review-service/domain"
 
+	review_proto "github.com/temryakov/go-backend-book-app/review-proto"
 	"gorm.io/gorm"
 )
 
@@ -59,6 +60,8 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 	}
 
 	log.Print(body)
+
+	review_proto.GetBookReq
 
 	if err != nil {
 		return nil, err

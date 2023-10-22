@@ -4,9 +4,10 @@ import (
 	"net/http"
 	"strings"
 
+	"book-service/domain"
+	"book-service/tokenutil"
+
 	"github.com/gin-gonic/gin"
-	"github.com/temryakov/go-backend-book-app/book-service/domain"
-	"github.com/temryakov/go-backend-book-app/book-service/tokenutil"
 )
 
 func AuthMiddleware(secret string) gin.HandlerFunc {

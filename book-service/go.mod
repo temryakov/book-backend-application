@@ -1,4 +1,4 @@
-module github.com/temryakov/go-backend-book-app/book-service
+module book-service
 
 go 1.20
 

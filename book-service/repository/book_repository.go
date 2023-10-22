@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/temryakov/go-backend-book-app/book-service/domain"
+	"book-service/domain"
 
 	"gorm.io/gorm"
 )

@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/temryakov/go-backend-book-app/book-service/domain"
-	review_proto "github.com/temryakov/go-backend-book-app/book-service/proto"
+	"book-service/domain"
+	review_proto "book-service/proto"
+
 	"google.golang.org/protobuf/proto"
 
 	"github.com/gin-gonic/gin"

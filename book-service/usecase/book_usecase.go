@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/temryakov/go-backend-book-app/book-service/domain"
+	"book-service/domain"
 )
 
 type bookUsecase struct {

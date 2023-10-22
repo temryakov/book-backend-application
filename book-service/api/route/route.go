@@ -3,7 +3,7 @@ package route
 import (
 	"time"
 
-	"github.com/temryakov/go-backend-book-app/book-service/bootstrap"
+	"book-service/bootstrap"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

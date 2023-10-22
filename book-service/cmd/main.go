@@ -3,9 +3,10 @@ package main
 import (
 	"time"
 
+	"book-service/api/route"
+	"book-service/bootstrap"
+
 	"github.com/gin-gonic/gin"
-	"github.com/temryakov/go-backend-book-app/book-service/api/route"
-	"github.com/temryakov/go-backend-book-app/book-service/bootstrap"
 )
 
 func main() {
