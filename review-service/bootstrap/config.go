@@ -16,6 +16,7 @@ type Config struct {
 	DBName         string `mapstructure:"POSTGRES_DB"`
 	SecretKey      string `mapstructure:"ACCESS_TOKEN_SECRET"`
 	BookServiceUrl string `mapstructure:"BOOK_SERVICE_URL"`
+	UserServiceUrl string `mapstructure:"USER_SERVICE_URL"`
 }
 
 var (
