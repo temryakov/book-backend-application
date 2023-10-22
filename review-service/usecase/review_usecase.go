@@ -2,18 +2,12 @@ package usecase
 
 import (
 	"context"
-	"fmt"
-	"io/ioutil"
-	"log"
 	"time"
 
 	"review-service/bootstrap"
 	"review-service/domain"
 	"review-service/transport"
 
-	rp "review-service/proto"
-
-	"google.golang.org/protobuf/proto"
 	"gorm.io/gorm"
 )
 
@@ -36,34 +30,16 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 	defer cancel()
 
 	review, err := ru.reviewRepository.FetchReview(ctx, conditions)
-
 	if err != nil {
 		return nil, err
 	}
 
 	resp, err := transport.FetchBookInfo(ctx, ru.config, review.BookId)
-
 	if err != nil {
-		fmt.Println("Error making HTTP request:", err)
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error reading response:", err)
-		return nil, err
-	}
-
-	bookInfo := &rp.GetBookResponse{}
-
-	err = proto.Unmarshal(body, bookInfo)
-	if err != nil {
-		fmt.Println("Error unmarshalling protobuf:", err)
-		return nil, err
-	}
-
-	log.Print(bookInfo)
-
+	bookInfo, err := transport.DeserializeBookInfo(resp)
 	if err != nil {
 		return nil, err
 	}
