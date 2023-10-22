@@ -16,7 +16,7 @@ func NewPublicReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Dura
 
 	rr := repository.NewReviewRepository(db)
 	rc := &controller.ReviewController{
-		ReviewUsecase: usecase.NewReviewUsecase(rr, timeout),
+		ReviewUsecase: usecase.NewReviewUsecase(rr, cfg, timeout),
 	}
 
 	group.GET("/:id", rc.FetchReview)
@@ -27,7 +27,7 @@ func NewPrivateReviewRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Dur
 
 	rr := repository.NewReviewRepository(db)
 	rc := &controller.ReviewController{
-		ReviewUsecase: usecase.NewReviewUsecase(rr, timeout),
+		ReviewUsecase: usecase.NewReviewUsecase(rr, cfg, timeout),
 	}
 
 	group.POST("/", rc.CreateReview)

@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
-	"strconv"
 	"time"
 
+	"review-service/bootstrap"
 	"review-service/domain"
+	"review-service/transport"
 
 	rp "review-service/proto"
 
@@ -19,12 +19,14 @@ import (
 
 type reviewUsecase struct {
 	reviewRepository domain.ReviewRepository
+	config           bootstrap.Config
 	contextTimeout   time.Duration
 }
 
-func NewReviewUsecase(reviewRepository domain.ReviewRepository, timeout time.Duration) domain.ReviewUsecase {
+func NewReviewUsecase(reviewRepository domain.ReviewRepository, cfg *bootstrap.Config, timeout time.Duration) domain.ReviewUsecase {
 	return &reviewUsecase{
 		reviewRepository: reviewRepository,
+		config:           *cfg,
 		contextTimeout:   timeout,
 	}
 }
@@ -39,16 +41,7 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 		return nil, err
 	}
 
-	client := &http.Client{}
-
-	url := "http://localhost:8080/api/book/" + strconv.FormatUint(uint64(review.BookId), 10)
-	req, _ := http.NewRequest("GET", url, nil)
-
-	log.Print(url)
-
-	req.Header.Set("Accept", "application/x-protobuf")
-
-	resp, err := client.Do(req)
+	resp, err := transport.FetchBookInfo(ctx, ru.config, review.BookId)
 
 	if err != nil {
 		fmt.Println("Error making HTTP request:", err)
