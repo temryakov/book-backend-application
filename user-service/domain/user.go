@@ -13,6 +13,10 @@ type User struct {
 	gorm.Model
 }
 
+type UserUsecase interface {
+	FetchByID(c context.Context, id uint) (*User, error)
+}
+
 type UserRepository interface {
 	Create(c context.Context, user *User) error
 	FetchByEmail(c context.Context, email string) (*User, error)
