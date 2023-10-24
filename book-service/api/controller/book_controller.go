@@ -39,12 +39,12 @@ func (u *BookController) FetchByID(c *gin.Context) {
 		return
 	}
 
-	protoBook := &review_proto.GetBookResponse{
-		Title:  book.Title,
-		Author: book.Author,
-	}
-
 	if c.GetHeader("Accept") == "application/x-protobuf" {
+
+		protoBook := &review_proto.GetBookResponse{
+			Title:  book.Title,
+			Author: book.Author,
+		}
 
 		data, err := proto.Marshal(protoBook)
 
