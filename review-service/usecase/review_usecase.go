@@ -44,10 +44,20 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 		return nil, err
 	}
 
+	resp, err = transport.FetchUserInfo(ctx, ru.config, review.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	userInfo, err := transport.DeserializeUserInfo(resp)
+	if err != nil {
+		return nil, err
+	}
+
 	return &domain.ReviewResponse{
 		BookAuthor:   bookInfo.GetAuthor(),
 		BookTitle:    bookInfo.GetTitle(),
-		ReviewAuthor: "Test Test",
+		ReviewAuthor: userInfo.GetName(),
 		Rating:       review.Rating,
 		ReviewTitle:  review.Title,
 		ReviewText:   review.Text,
