@@ -33,23 +33,11 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 	if err != nil {
 		return nil, err
 	}
-
-	resp, err := transport.FetchBookInfo(ctx, ru.config, review.BookId)
+	bookInfo, err := transport.FetchBookInfo(ctx, ru.config, review.BookId)
 	if err != nil {
 		return nil, err
 	}
-
-	bookInfo, err := transport.DeserializeBookInfo(resp)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err = transport.FetchUserInfo(ctx, ru.config, review.UserId)
-	if err != nil {
-		return nil, err
-	}
-
-	userInfo, err := transport.DeserializeUserInfo(resp)
+	userInfo, err := transport.FetchUserInfo(ctx, ru.config, review.UserId)
 	if err != nil {
 		return nil, err
 	}

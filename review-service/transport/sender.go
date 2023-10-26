@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"review-service/bootstrap"
+	rp "review-service/proto"
 	"strconv"
 )
 
@@ -48,12 +49,30 @@ func fetchInfo(ctx context.Context, serviceUrl string, entityId uint) (*http.Res
 	return resp, nil
 }
 
-func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint) (*http.Response, error) {
+func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint) (*rp.GetBookResponse, error) {
 	url := cfg.BookServiceUrl
-	return fetchInfo(ctx, url, bookId)
+
+	resp, err := fetchInfo(ctx, url, bookId)
+	if err != nil {
+		return nil, err
+	}
+	bookInfo, err := DeserializeBookInfo(resp)
+	if err != nil {
+		return nil, err
+	}
+	return bookInfo, nil
 }
 
-func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint) (*http.Response, error) {
+func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint) (*rp.GetUserResponse, error) {
 	url := cfg.UserServiceUrl
-	return fetchInfo(ctx, url, userId)
+
+	resp, err := fetchInfo(ctx, url, userId)
+	if err != nil {
+		return nil, err
+	}
+	userInfo, err := DeserializeUserInfo(resp)
+	if err != nil {
+		return nil, err
+	}
+	return userInfo, nil
 }
