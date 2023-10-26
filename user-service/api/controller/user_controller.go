@@ -6,6 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/temryakov/go-backend-book-app/user-service/domain"
+	review_proto "github.com/temryakov/go-backend-book-app/user-service/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 type UserController struct {
@@ -25,6 +27,22 @@ func (u *UserController) Fetch(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.ErrInternalServerError)
+		return
+	}
+	if c.GetHeader("Accept") == "application/x-protobuf" {
+
+		protoUser := &review_proto.GetUserResponse{
+			Name: user.Name,
+		}
+
+		data, err := proto.Marshal(protoUser)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to serialize book data"})
+			return
+		}
+
+		c.Data(http.StatusOK, "application/x-protobuf", data)
 		return
 	}
 	c.JSON(
