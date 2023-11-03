@@ -29,23 +29,32 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 	ctx, cancel := context.WithTimeout(c, ru.contextTimeout)
 	defer cancel()
 
+	bookCh, userCh := make(chan transport.BookInfo), make(chan transport.UserInfo)
+
 	review, err := ru.reviewRepository.FetchReview(ctx, conditions)
 	if err != nil {
 		return nil, err
 	}
-	bookInfo, err := transport.FetchBookInfo(ctx, ru.config, review.BookId)
-	if err != nil {
-		return nil, err
+
+	go transport.FetchBookInfo(ctx, ru.config, review.BookId, bookCh)
+	go transport.FetchUserInfo(ctx, ru.config, review.UserId, userCh)
+
+	bookInfo := <-bookCh
+
+	if bookInfo.Error != nil {
+		return nil, *bookInfo.Error
 	}
-	userInfo, err := transport.FetchUserInfo(ctx, ru.config, review.UserId)
-	if err != nil {
-		return nil, err
+
+	userInfo := <-userCh
+
+	if userInfo.Error != nil {
+		return nil, *userInfo.Error
 	}
 
 	return &domain.ReviewResponse{
-		BookAuthor:   bookInfo.GetAuthor(),
-		BookTitle:    bookInfo.GetTitle(),
-		ReviewAuthor: userInfo.GetName(),
+		BookAuthor:   *bookInfo.Author,
+		BookTitle:    *bookInfo.Title,
+		ReviewAuthor: *userInfo.Name,
 		Rating:       review.Rating,
 		ReviewTitle:  review.Title,
 		ReviewText:   review.Text,
