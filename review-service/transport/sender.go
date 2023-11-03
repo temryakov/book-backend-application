@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"review-service/bootstrap"
-	rp "review-service/proto"
 	"strconv"
 )
 
@@ -13,6 +12,16 @@ type ServiceInfo struct {
 	Client  *http.Client
 	Context context.Context
 	URL     string
+}
+type BookInfo struct {
+	Author *string
+	Title  *string
+	Error  *error
+}
+
+type UserInfo struct {
+	Name  *string
+	Error *error
 }
 
 func NewServiceInfo(context context.Context, ServiceURL string, EntityID uint) *ServiceInfo {
@@ -49,30 +58,42 @@ func fetchInfo(ctx context.Context, serviceUrl string, entityId uint) (*http.Res
 	return resp, nil
 }
 
-func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint) (*rp.GetBookResponse, error) {
+func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint, ch chan BookInfo) {
 	url := cfg.BookServiceUrl
 
 	resp, err := fetchInfo(ctx, url, bookId)
 	if err != nil {
-		return nil, err
+		ch <- BookInfo{nil, nil, &err}
 	}
 	bookInfo, err := DeserializeBookInfo(resp)
 	if err != nil {
-		return nil, err
+		ch <- BookInfo{nil, nil, &err}
 	}
-	return bookInfo, nil
+	author := bookInfo.GetAuthor()
+	title := bookInfo.GetTitle()
+
+	ch <- BookInfo{
+		Author: &author,
+		Title:  &title,
+		Error:  nil,
+	}
 }
 
-func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint) (*rp.GetUserResponse, error) {
+func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint, ch chan UserInfo) {
 	url := cfg.UserServiceUrl
 
 	resp, err := fetchInfo(ctx, url, userId)
 	if err != nil {
-		return nil, err
+		ch <- UserInfo{nil, &err}
 	}
 	userInfo, err := DeserializeUserInfo(resp)
 	if err != nil {
-		return nil, err
+		ch <- UserInfo{nil, &err}
 	}
-	return userInfo, nil
+	name := userInfo.GetName()
+
+	ch <- UserInfo{
+		Name:  &name,
+		Error: nil,
+	}
 }
