@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"review-service/bootstrap"
@@ -36,29 +37,47 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 		return nil, err
 	}
 
-	go transport.FetchBookInfo(ctx, ru.config, review.BookId, bookCh)
-	go transport.FetchUserInfo(ctx, ru.config, review.UserId, userCh)
-
-	bookInfo := <-bookCh
-
-	if bookInfo.Error != nil {
-		return nil, *bookInfo.Error
+	res := &domain.ReviewResponse{
+		Rating:      review.Rating,
+		ReviewTitle: review.Title,
+		ReviewText:  review.Text,
 	}
 
-	userInfo := <-userCh
+	var wg sync.WaitGroup
 
-	if userInfo.Error != nil {
-		return nil, *userInfo.Error
+	wg.Add(2)
+
+	go func() {
+		defer wg.Done()
+		transport.FetchBookInfo(ctx, ru.config, review.BookId, bookCh)
+	}()
+	go func() {
+		defer wg.Done()
+		transport.FetchUserInfo(ctx, ru.config, review.UserId, userCh)
+	}()
+
+	for i := 0; i < 2; i++ {
+		select {
+		case bookResult := <-bookCh:
+			if bookResult.Error != nil {
+				return nil, *bookResult.Error
+			}
+			res.BookAuthor = *bookResult.Author
+			res.BookTitle = *bookResult.Title
+
+		case userResult := <-userCh:
+			if userResult.Error != nil {
+				return nil, *userResult.Error
+			}
+			res.ReviewAuthor = *userResult.Name
+
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		}
 	}
+	wg.Wait()
 
-	return &domain.ReviewResponse{
-		BookAuthor:   *bookInfo.Author,
-		BookTitle:    *bookInfo.Title,
-		ReviewAuthor: *userInfo.Name,
-		Rating:       review.Rating,
-		ReviewTitle:  review.Title,
-		ReviewText:   review.Text,
-	}, nil
+	return res, nil
 }
 
 func (ru *reviewUsecase) CreateReview(c context.Context, review *domain.Review) error {
