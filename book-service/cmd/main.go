@@ -23,5 +23,5 @@ func main() {
 
 	route.Setup(config, db, timeout, gin)
 
-	gin.Run("localhost:" + config.MicroservicePort)
+	gin.Run("0.0.0.0:" + config.MicroservicePort)
 }
