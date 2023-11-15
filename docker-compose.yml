@@ -14,7 +14,7 @@ services:
       POSTGRES_DB: bs
       POSTGRES_PASSWORD: postgres
     ports:
-      - "8080:8080"
+      - 3000:3000
     depends_on:
       - postgres
     
@@ -27,7 +27,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-    - "5432:5432"
+    - 5432:5432
 
 volumes:
   bs-data:
