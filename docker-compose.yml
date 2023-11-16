@@ -1,5 +1,16 @@
-version: '1'
+version: '3.8'
 services:
+
+  postgres:
+    image: postgres:15
+    volumes:
+      - bs-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: bs
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+    - 5432:5432
 
   book-service:
     image: go-book-service
@@ -17,17 +28,7 @@ services:
       - 3000:3000
     depends_on:
       - postgres
-    
-  postgres:
-    image: postgres:15
-    volumes:
-      - bs-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: bs
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-    - 5432:5432
+    command: air ./cmd/main.go -b 0.0.0.0
 
 volumes:
   bs-data:
