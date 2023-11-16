@@ -6,6 +6,8 @@ ADD . /book-service
 
 WORKDIR /book-service
 
-RUN go build -o main cmd/main.go
+RUN go install github.com/cosmtrek/air@latest
 
-CMD ["/book-service/main"]
+COPY . .
+
+RUN go mod tidy
