@@ -2,15 +2,15 @@ version: '3.8'
 services:
 
   postgres:
-    image: postgres:15
+    image: postgres:latest
     volumes:
       - bs-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: bs
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${BS_POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-    - 5432:5432
+    - "${BS_POSTGRES_PORT}:${BS_POSTGRES_PORT}"
 
   book-service:
     image: go-book-service
@@ -19,13 +19,13 @@ services:
       dockerfile: Dockerfile
     env_file: ./book-service/.env
     environment:
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: postgres
-      POSTGRES_DB: bs
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${BS_POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${BS_POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - 3000:3000
+      - "${BS_SERVER_PORT}:${BS_SERVER_PORT}"
     depends_on:
       - postgres
     command: air ./cmd/main.go -b 0.0.0.0
