@@ -29,9 +29,12 @@ func Get() *Config {
 	viper.SetConfigFile(".env")
 
 	err := viper.ReadInConfig()
+
 	if err != nil {
-		log.Fatal("Can't find the file .env : ", err)
+		log.Printf("Can't find the file .env: %s", err)
 	}
+
+	viper.AutomaticEnv()
 
 	err = viper.Unmarshal(&config)
 	if err != nil {
