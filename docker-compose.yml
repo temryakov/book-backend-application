@@ -6,7 +6,7 @@ services:
     volumes:
       - bs-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: ${BS_POSTGRES_PORT}
+      POSTGRES_DB: ${BS_POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
@@ -17,7 +17,6 @@ services:
     build:
       context: ./book-service
       dockerfile: Dockerfile
-    env_file: ./book-service/.env
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${BS_POSTGRES_PORT}
