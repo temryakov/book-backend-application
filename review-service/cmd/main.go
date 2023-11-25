@@ -23,5 +23,5 @@ func main() {
 
 	route.Setup(config, db, timeout, gin)
 
-	gin.Run(config.ServerAddress)
+	gin.Run("0.0.0.0:" + config.Port)
 }

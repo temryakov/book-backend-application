@@ -8,7 +8,7 @@ import (
 )
 
 type Config struct {
-	ServerAddress  string `mapstructure:"SERVER_ADDRESS"`
+	Port           string `mapstructure:"MICROSERVICE_PORT"`
 	ContextTimeout int    `mapstructure:"CONTEXT_TIMEOUT"`
 	DBHost         string `mapstructure:"POSTGRES_HOST"`
 	DBPort         string `mapstructure:"POSTGRES_PORT"`
