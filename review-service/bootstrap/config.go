@@ -8,12 +8,13 @@ import (
 )
 
 type Config struct {
-	Port           string `mapstructure:"MICROSERVICE_PORT"`
+	ServerPort     string `mapstructure:"SERVER_PORT"`
 	ContextTimeout int    `mapstructure:"CONTEXT_TIMEOUT"`
 	DBHost         string `mapstructure:"POSTGRES_HOST"`
 	DBPort         string `mapstructure:"POSTGRES_PORT"`
 	DBUser         string `mapstructure:"POSTGRES_USER"`
 	DBName         string `mapstructure:"POSTGRES_DB"`
+	DBPassword     string `mapstructure:"POSTGRES_PASSWORD"`
 	SecretKey      string `mapstructure:"ACCESS_TOKEN_SECRET"`
 	BookServiceUrl string `mapstructure:"BOOK_SERVICE_URL"`
 	UserServiceUrl string `mapstructure:"USER_SERVICE_URL"`
