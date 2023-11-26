@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - bs-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${BS_POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+    - "${EXT_BS_POSTGRES_PORT}:${POSTGRES_PORT}"
+
+  service:
+    image: book-service
+    build:
+      context: ./book-service
+      dockerfile: Dockerfile
+    environment:
+      SERVER_PORT: ${BS_SERVER_PORT}
+      POSTGRES_HOST: ${BS_POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${BS_POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${BS_SERVER_PORT}:${BS_SERVER_PORT}"
+    command: air ./cmd/main.go -b 0.0.0.0
