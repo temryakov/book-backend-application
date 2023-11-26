@@ -6,6 +6,6 @@ ADD . /user-service
 
 WORKDIR /user-service
 
-RUN go build -o main cmd/main.go
+RUN go install github.com/cosmtrek/air@latest
 
-CMD ["/user-service/main"]
+RUN go mod tidy
