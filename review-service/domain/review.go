@@ -7,11 +7,11 @@ import (
 )
 
 type Review struct {
-	BookId uint
-	UserId uint
-	Rating uint
-	Title  string
-	Text   string
+	BookId uint   `gorm:"integer";not null;default:null`
+	UserId uint   `gorm:"integer";not null;default:null`
+	Rating uint   `gorm:"integer";not null;default:null`
+	Title  string `gorm:"varchar";not null;default:null`
+	Text   string `gorm:"varchar";not null;default:null`
 	gorm.Model
 }
 
