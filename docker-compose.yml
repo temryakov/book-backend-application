@@ -1,33 +1,28 @@
 version: '3.8'
 services:
 
-  postgres:
-    image: postgres:latest
-    volumes:
-      - bs-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ${BS_POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-    - "${BS_POSTGRES_PORT}:${BS_POSTGRES_PORT}"
-
+  bookdb:
+   extends:
+      file: ./book-service/service.yml
+      service: postgres
   book-service:
-    image: go-book-service
-    build:
-      context: ./book-service
-      dockerfile: Dockerfile
-    environment:
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_PORT: ${BS_POSTGRES_PORT}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB: ${BS_POSTGRES_DB}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "${BS_SERVER_PORT}:${BS_SERVER_PORT}"
+    extends:
+      file: ./book-service/service.yml
+      service: service
     depends_on:
-      - postgres
-    command: air ./cmd/main.go -b 0.0.0.0
+      - bookdb
+
+  reviewdb:
+   extends:
+      file: ./review-service/service.yml
+      service: postgres
+  review-service:
+    extends:
+      file: ./review-service/service.yml
+      service: service
+    depends_on:
+      - reviewdb
 
 volumes:
-  bs-data:
+   bs-data:
+   rs-data:
