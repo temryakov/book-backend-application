@@ -22,7 +22,19 @@ services:
       service: service
     depends_on:
       - reviewdb
+  
+  userdb:
+   extends:
+      file: ./user-service/service.yml
+      service: postgres
+  user-service:
+    extends:
+      file: ./user-service/service.yml
+      service: service
+    depends_on:
+      - userdb
 
 volumes:
-   bs-data:
-   rs-data:
+  bs-data:
+  rs-data:
+  us-data:
