@@ -8,14 +8,13 @@ import (
 )
 
 type Config struct {
-	ServerAddress    string `mapstructure:"SERVER_ADDRESS"`
-	ContextTimeout   int    `mapstructure:"CONTEXT_TIMEOUT"`
-	DBHost           string `mapstructure:"POSTGRES_HOST"`
-	DBPort           string `mapstructure:"POSTGRES_PORT"`
-	DBUser           string `mapstructure:"POSTGRES_USER"`
-	DBPassword       string `mapstructure:"POSTGRES_PASSWORD"`
-	DBName           string `mapstructure:"POSTGRES_DB"`
-	MicroservicePort string `mapstructure:"MICROSERVICE_PORT"`
+	ContextTimeout int    `mapstructure:"CONTEXT_TIMEOUT"`
+	DBHost         string `mapstructure:"POSTGRES_HOST"`
+	DBPort         string `mapstructure:"POSTGRES_PORT"`
+	DBUser         string `mapstructure:"POSTGRES_USER"`
+	DBPassword     string `mapstructure:"POSTGRES_PASSWORD"`
+	DBName         string `mapstructure:"POSTGRES_DB"`
+	ServerPort     string `mapstructure:"SERVER_PORT"`
 }
 
 var (
