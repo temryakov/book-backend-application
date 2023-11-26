@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - rs-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${RS_POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+    - "${EXT_RS_POSTGRES_PORT}:${POSTGRES_PORT}"
+
+  service:
+    image: review-service
+    build:
+      context: ./review-service
+      dockerfile: Dockerfile
+    environment:
+      SERVER_PORT: ${RS_SERVER_PORT}
+      POSTGRES_HOST: ${RS_POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${RS_POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${RS_SERVER_PORT}:${RS_SERVER_PORT}"
+    command: air ./cmd/main.go -b 0.0.0.0
