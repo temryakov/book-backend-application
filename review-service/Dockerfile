@@ -6,6 +6,6 @@ ADD . /review-service
 
 WORKDIR /review-service
 
-RUN go build -o main cmd/main.go
+RUN go install github.com/cosmtrek/air@latest
 
-CMD ["/review-service/main"]
+RUN go mod tidy
