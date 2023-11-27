@@ -33,11 +33,8 @@ Review Service focuses on user-generated reviews. It enables users to post and c
 
 | Method   | URL                                      | Description                              |
 | -------- | ---------------------------------------- | ---------------------------------------- |
-| `GET`    | `/api/book/all`                          | Fetch all existing books.                |
-| `GET`    | `/api/book/:id`                          | Fetch book by id.                        |
-| `POST`   | `/api/book`                              | Add new book.                            |
-| `PATCH`  | `/api/book/:id`                          | Update book by id.                       |
-| `DELETE` | `/api/book/:id`                          | Delete book by id.                       |
+| `GET`    | `/api/review/:id`                        | Fetch review by id.                      |
+| `POST`   | `/api/review`                            | Add new book.                            |
 
 
 
