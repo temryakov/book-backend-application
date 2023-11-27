@@ -14,6 +14,7 @@ type Config struct {
 	DBPort         string `mapstructure:"POSTGRES_PORT"`
 	DBUser         string `mapstructure:"POSTGRES_USER"`
 	DBName         string `mapstructure:"POSTGRES_DB"`
+	DBPassword     string `mapstructure:"POSTGRES_PASSWORD"`
 	SecretKey      string `mapstructure:"ACCESS_TOKEN_SECRET"`
 	ExpiryHours    int    `mapstructure:"ACCESS_TOKEN_EXPIRY_HOURS"`
 }
