@@ -58,16 +58,16 @@ func fetchInfo(ctx context.Context, serviceUrl string, entityId uint) (*http.Res
 	return resp, nil
 }
 
-func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint, ch chan BookInfo) {
+func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint, ch chan BookInfo) error {
 	url := cfg.BookServiceUrl
 
 	resp, err := fetchInfo(ctx, url, bookId)
 	if err != nil {
-		ch <- BookInfo{nil, nil, &err}
+		return err
 	}
 	bookInfo, err := DeserializeBookInfo(resp)
 	if err != nil {
-		ch <- BookInfo{nil, nil, &err}
+		return err
 	}
 	author := bookInfo.GetAuthor()
 	title := bookInfo.GetTitle()
@@ -77,18 +77,21 @@ func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint, ch ch
 		Title:  &title,
 		Error:  nil,
 	}
+	return nil
 }
 
-func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint, ch chan UserInfo) {
+func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint, ch chan UserInfo) error {
 	url := cfg.UserServiceUrl
 
 	resp, err := fetchInfo(ctx, url, userId)
 	if err != nil {
-		ch <- UserInfo{nil, &err}
+		return err
+		// ch <- UserInfo{nil, &err}
 	}
 	userInfo, err := DeserializeUserInfo(resp)
 	if err != nil {
-		ch <- UserInfo{nil, &err}
+		return err
+		// ch <- UserInfo{nil, &err}
 	}
 	name := userInfo.GetName()
 
@@ -96,4 +99,5 @@ func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint, ch ch
 		Name:  &name,
 		Error: nil,
 	}
+	return nil
 }

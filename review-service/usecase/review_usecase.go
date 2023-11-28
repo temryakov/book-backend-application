@@ -49,26 +49,24 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 
 	go func() {
 		defer wg.Done()
-		transport.FetchBookInfo(ctx, ru.config, review.BookId, bookCh)
+		if err := transport.FetchBookInfo(ctx, ru.config, review.BookId, bookCh); err != nil {
+			return
+		}
 	}()
 	go func() {
 		defer wg.Done()
-		transport.FetchUserInfo(ctx, ru.config, review.UserId, userCh)
+		if err := transport.FetchUserInfo(ctx, ru.config, review.UserId, userCh); err != nil {
+			return
+		}
 	}()
 
 	for i := 0; i < 2; i++ {
 		select {
 		case bookResult := <-bookCh:
-			if bookResult.Error != nil {
-				return nil, *bookResult.Error
-			}
 			res.BookAuthor = *bookResult.Author
 			res.BookTitle = *bookResult.Title
 
 		case userResult := <-userCh:
-			if userResult.Error != nil {
-				return nil, *userResult.Error
-			}
 			res.ReviewAuthor = *userResult.Name
 
 		case <-ctx.Done():
