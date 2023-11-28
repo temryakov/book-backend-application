@@ -16,12 +16,10 @@ type ServiceInfo struct {
 type BookInfo struct {
 	Author *string
 	Title  *string
-	Error  *error
 }
 
 type UserInfo struct {
-	Name  *string
-	Error *error
+	Name *string
 }
 
 func NewServiceInfo(context context.Context, ServiceURL string, EntityID uint) *ServiceInfo {
@@ -75,7 +73,6 @@ func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint, ch ch
 	ch <- BookInfo{
 		Author: &author,
 		Title:  &title,
-		Error:  nil,
 	}
 	return nil
 }
@@ -96,8 +93,7 @@ func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint, ch ch
 	name := userInfo.GetName()
 
 	ch <- UserInfo{
-		Name:  &name,
-		Error: nil,
+		Name: &name,
 	}
 	return nil
 }
