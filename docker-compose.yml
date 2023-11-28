@@ -5,7 +5,7 @@ services:
    extends:
       file: ./book-service/service.yml
       service: postgres
-  book-service:
+  bookservice:
     extends:
       file: ./book-service/service.yml
       service: service
@@ -16,7 +16,7 @@ services:
    extends:
       file: ./review-service/service.yml
       service: postgres
-  review-service:
+  reviewservice:
     extends:
       file: ./review-service/service.yml
       service: service
@@ -27,7 +27,7 @@ services:
    extends:
       file: ./user-service/service.yml
       service: postgres
-  user-service:
+  userservice:
     extends:
       file: ./user-service/service.yml
       service: service
