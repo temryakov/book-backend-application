@@ -22,8 +22,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${RS_POSTGRES_DB}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      BOOK_SERVICE_URL: "http://0.0.0.0:${BS_SERVER_PORT}/api/book/"
-      USER_SERVICE_URL: "http://0.0.0.0:${US_SERVER_PORT}/api/user/"
+      BOOK_SERVICE_URL: ${BOOK_SERVICE_URL}
+      USER_SERVICE_URL: ${USER_SERVICE_URL}
     ports:
       - "${RS_SERVER_PORT}:${RS_SERVER_PORT}"
     command: air ./cmd/main.go -b 0.0.0.0
