@@ -116,6 +116,9 @@ func (ru *reviewUsecase) DeleteReview(c context.Context, reviewId uint, userId u
 	if review.UserId != userId {
 		return domain.ErrNotPermitted
 	}
+	if err != nil {
+		return err
+	}
 
 	err = ru.reviewRepository.DeleteReview(ctx, reviewId)
 
