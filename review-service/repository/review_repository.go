@@ -34,7 +34,7 @@ func (rr *reviewRepository) CreateReview(ctx context.Context, review *domain.Rev
 
 func (rr *reviewRepository) DeleteReview(ctx context.Context, reviewId uint) error {
 
-	var review *domain.Review
+	var review domain.Review
 
 	if err := rr.database.WithContext(ctx).Delete(&review, reviewId).Error; err != nil {
 		return err

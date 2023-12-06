@@ -99,8 +99,26 @@ func (ru *reviewUsecase) CreateReview(c context.Context, review *domain.Review) 
 	return ru.reviewRepository.CreateReview(ctx, review)
 }
 
-func (ru *reviewUsecase) DeleteReview(c context.Context, reviewId uint) error {
+func (ru *reviewUsecase) DeleteReview(c context.Context, reviewId uint, userId uint) error {
 	ctx, cancel := context.WithTimeout(c, ru.contextTimeout)
+
 	defer cancel()
-	return ru.reviewRepository.DeleteReview(ctx, reviewId)
+
+	query := domain.ReviewQuery{
+		ReviewID: reviewId,
+		UserId:   userId,
+	}
+
+	_, err := ru.reviewRepository.FetchReview(ctx, &query)
+
+	err := ru.reviewRepository.DeleteReview(ctx, reviewId)
+
+	if err == gorm.ErrRecordNotFound {
+		return err
+	}
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
