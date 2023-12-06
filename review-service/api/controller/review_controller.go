@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -58,7 +59,12 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 		c.JSON(http.StatusNotFound, domain.ReviewNotFound)
 		return
 	}
+	if err == domain.ErrNotPermitted {
+		c.JSON(http.StatusForbidden, domain.MessageForbidden)
+		return
+	}
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
