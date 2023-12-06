@@ -109,16 +109,19 @@ func (ru *reviewUsecase) DeleteReview(c context.Context, reviewId uint, userId u
 		UserId:   userId,
 	}
 
-	_, err := ru.reviewRepository.FetchReview(ctx, &query)
-
-	err := ru.reviewRepository.DeleteReview(ctx, reviewId)
+	review, err := ru.reviewRepository.FetchReview(ctx, &query)
 
 	if err == gorm.ErrRecordNotFound {
 		return err
 	}
+	if review.UserId != userId {
+		return domain.ErrNotPermitted
+	}
+
+	err = ru.reviewRepository.DeleteReview(ctx, reviewId)
+
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
