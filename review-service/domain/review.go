@@ -32,9 +32,9 @@ type ReviewResponse struct {
 }
 
 type ReviewQuery struct {
-	BookId uint
-	UserId uint
-	ID     uint
+	BookId   uint
+	UserId   uint
+	ReviewID uint
 }
 
 type BookInfo struct {
