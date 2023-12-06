@@ -59,5 +59,5 @@ type ReviewUsecase interface {
 	FetchReview(c context.Context, conditions *ReviewQuery) (*ReviewResponse, error)
 	CreateReview(c context.Context, review *Review) error
 	// UpdateReview(c context.Context, review *Review, Model *Review) error
-	DeleteReview(c context.Context, ReviewID uint) error
+	DeleteReview(c context.Context, ReviewID uint, UserID uint) error
 }
