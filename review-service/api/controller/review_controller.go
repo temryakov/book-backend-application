@@ -24,7 +24,7 @@ func (u *ReviewController) FetchReview(c *gin.Context) {
 	}
 
 	query := domain.ReviewQuery{
-		ReviewID: uint(reviewId),
+		ID: uint(reviewId),
 	}
 
 	review, err := u.ReviewUsecase.FetchReview(c, &query)

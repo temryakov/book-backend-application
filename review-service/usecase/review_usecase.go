@@ -105,8 +105,7 @@ func (ru *reviewUsecase) DeleteReview(c context.Context, reviewId uint, userId u
 	defer cancel()
 
 	query := domain.ReviewQuery{
-		ReviewID: reviewId,
-		UserId:   userId,
+		ID: reviewId,
 	}
 
 	review, err := ru.reviewRepository.FetchReview(ctx, &query)
