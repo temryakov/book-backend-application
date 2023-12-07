@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -35,6 +35,7 @@ func (u *ReviewController) FetchReview(c *gin.Context) {
 		return
 	}
 	if err != nil {
+		log.Print(err)
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
@@ -64,7 +65,7 @@ func (u *ReviewController) DeleteReview(c *gin.Context) {
 		return
 	}
 	if err != nil {
-		fmt.Println(err)
+		log.Print(err)
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
@@ -102,6 +103,7 @@ func (u *ReviewController) CreateReview(c *gin.Context) {
 		return
 	}
 	if err != nil {
+		log.Print(err)
 		c.JSON(http.StatusInternalServerError, domain.MessageInternalServerError)
 		return
 	}
