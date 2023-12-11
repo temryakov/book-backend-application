@@ -41,3 +41,13 @@ func (rr *reviewRepository) DeleteReview(ctx context.Context, reviewId uint) err
 	}
 	return nil
 }
+
+func (rr *reviewRepository) DeleteReviewByBookId(ctx context.Context, BookId uint) error {
+
+	var review domain.Review
+
+	if err := rr.database.WithContext(ctx).Delete(&review, "book_id LIKE ?", BookId).Error; err != nil {
+		return err
+	}
+	return nil
+}
