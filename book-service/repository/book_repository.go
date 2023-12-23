@@ -18,7 +18,7 @@ func NewBookRepository(database *gorm.DB) domain.BookRepository {
 	}
 }
 
-func (r *bookRepository) FetchBookByID(ctx context.Context, id uint) (*domain.Book, error) {
+func (r *bookRepository) FetchBookByID(ctx context.Context, id int) (*domain.Book, error) {
 
 	var book *domain.Book
 
@@ -48,7 +48,7 @@ func (r *bookRepository) UpdateBook(ctx context.Context, book *domain.Book, Mode
 	return nil
 }
 
-func (r *bookRepository) DeleteBook(ctx context.Context, bookId uint) error {
+func (r *bookRepository) DeleteBook(ctx context.Context, bookId int) error {
 
 	var book domain.Book
 

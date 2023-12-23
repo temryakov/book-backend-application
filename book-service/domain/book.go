@@ -31,16 +31,16 @@ type AllBookResponse struct {
 
 type BookRepository interface {
 	FetchBooks(c context.Context) (*[]Book, error)
-	FetchBookByID(c context.Context, BookID uint) (*Book, error)
+	FetchBookByID(c context.Context, BookID int) (*Book, error)
 	CreateBook(c context.Context, book *Book) error
 	UpdateBook(c context.Context, book *Book, Model *Book) error
-	DeleteBook(c context.Context, BookID uint) error
+	DeleteBook(c context.Context, BookID int) error
 }
 
 type BookUsecase interface {
 	FetchBooks(c context.Context) (*[]Book, error)
-	FetchBookByID(c context.Context, BookID uint) (*Book, error)
+	FetchBookByID(c context.Context, BookID int) (*Book, error)
 	CreateBook(c context.Context, book *Book) error
-	UpdateBook(c context.Context, book *Book, BookID uint) error
-	DeleteBook(c context.Context, BookID uint) error
+	UpdateBook(c context.Context, book *Book, BookID int) error
+	DeleteBook(c context.Context, BookID int) error
 }

@@ -19,14 +19,14 @@ type BookController struct {
 
 func (u *BookController) FetchByID(c *gin.Context) {
 
-	bookId, err := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
 
-	book, err := u.BookUsecase.FetchBookByID(c, uint(bookId))
+	book, err := u.BookUsecase.FetchBookByID(c, bookId)
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.ErrorResponse{
@@ -114,7 +114,7 @@ func (u *BookController) Create(c *gin.Context) {
 
 func (u *BookController) Update(c *gin.Context) {
 
-	bookId, err := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
@@ -128,7 +128,7 @@ func (u *BookController) Update(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-	err = u.BookUsecase.UpdateBook(c, book, uint(bookId))
+	err = u.BookUsecase.UpdateBook(c, book, bookId)
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.BookNotFound)
@@ -145,13 +145,13 @@ func (u *BookController) Update(c *gin.Context) {
 
 func (u *BookController) Delete(c *gin.Context) {
 
-	bookId, err := strconv.ParseUint(c.Param("id"), 0, 16)
+	bookId, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.MessageBadRequest)
 		return
 	}
-	err = u.BookUsecase.DeleteBook(c, uint(bookId))
+	err = u.BookUsecase.DeleteBook(c, bookId)
 
 	if err == gorm.ErrRecordNotFound {
 		c.JSON(http.StatusNotFound, domain.BookNotFound)
