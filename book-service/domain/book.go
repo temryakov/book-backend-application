@@ -19,6 +19,7 @@ type BookData struct {
 	Author         string `json:"author"`
 	ChaptersAmount uint   `json:"chapters_amount"`
 }
+
 type BookResponse struct {
 	Message string   `json:"message"`
 	Data    BookData `json:"data"`
