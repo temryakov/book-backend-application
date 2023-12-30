@@ -1,4 +1,4 @@
-# Go Backend Book Application
+# Book Backend Application
 
 This project is a microservices-based application developed in Go. It essentially comprises three services: an Authentication Service, a Review Service, and a Book Service. Each microservice operates within its own container and has a dedicated PostgreSQL database. They interact through a REST API using the protobuf format. This project will evolve alongside my learning and professional growth. 
 
