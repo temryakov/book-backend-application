@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"review-service/bootstrap"
 	"strconv"
+	"sync"
 )
 
 type ServiceInfo struct {
@@ -56,7 +57,10 @@ func fetchInfo(ctx context.Context, serviceUrl string, entityId uint) (*http.Res
 	return resp, nil
 }
 
-func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint, ch chan BookInfo) error {
+func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint, ch chan BookInfo, wg *sync.WaitGroup) error {
+
+	defer wg.Done()
+
 	url := cfg.BookServiceUrl
 
 	resp, err := fetchInfo(ctx, url, bookId)
@@ -77,18 +81,19 @@ func FetchBookInfo(ctx context.Context, cfg bootstrap.Config, bookId uint, ch ch
 	return nil
 }
 
-func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint, ch chan UserInfo) error {
+func FetchUserInfo(ctx context.Context, cfg bootstrap.Config, userId uint, ch chan UserInfo, wg *sync.WaitGroup) error {
+
+	defer wg.Done()
+
 	url := cfg.UserServiceUrl
 
 	resp, err := fetchInfo(ctx, url, userId)
 	if err != nil {
 		return err
-		// ch <- UserInfo{nil, &err}
 	}
 	userInfo, err := DeserializeUserInfo(resp)
 	if err != nil {
 		return err
-		// ch <- UserInfo{nil, &err}
 	}
 	name := userInfo.GetName()
 

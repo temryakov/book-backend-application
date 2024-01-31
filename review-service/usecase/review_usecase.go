@@ -48,14 +48,12 @@ func (ru *reviewUsecase) FetchReview(c context.Context, conditions *domain.Revie
 	wg.Add(2)
 
 	go func() {
-		defer wg.Done()
-		if err := transport.FetchBookInfo(ctx, ru.config, review.BookId, bookCh); err != nil {
+		if err := transport.FetchBookInfo(ctx, ru.config, review.BookId, bookCh, &wg); err != nil {
 			return
 		}
 	}()
 	go func() {
-		defer wg.Done()
-		if err := transport.FetchUserInfo(ctx, ru.config, review.UserId, userCh); err != nil {
+		if err := transport.FetchUserInfo(ctx, ru.config, review.UserId, userCh, &wg); err != nil {
 			return
 		}
 	}()
