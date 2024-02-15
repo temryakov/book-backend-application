@@ -22,8 +22,10 @@ func NewUserUsecase(userRepository domain.UserRepository, timeout time.Duration)
 func (uu *userUsecase) FetchByID(c context.Context, id uint) (*domain.User, error) {
 	ctx, cancel := context.WithTimeout(c, uu.contextTimeout)
 	defer cancel()
-	if user, err := uu.userRepository.FetchByID(ctx, id); user == nil {
+	user, err := uu.userRepository.FetchByID(ctx, id)
+
+	if user == nil {
 		return nil, err
 	}
-	return uu.userRepository.FetchByID(ctx, id)
+	return user, nil
 }
