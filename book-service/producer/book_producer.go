@@ -11,7 +11,7 @@ type bookProducer struct {
 	topic    string
 }
 
-func NewBookProducer(producer *kafka.Producer, id string, data string) domain.BookProducer {
+func NewBookProducer(producer *kafka.Producer) domain.BookProducer {
 	return &bookProducer{
 		producer: producer,
 		topic:    "books",
@@ -19,11 +19,20 @@ func NewBookProducer(producer *kafka.Producer, id string, data string) domain.Bo
 }
 
 func (bp *bookProducer) WriteMessage(id string, data string) {
-	bp.producer.Produce(&kafka.Message{
-		TopicPartition: kafka.TopicPartition{Topic: &bp.topic, Partition: kafka.PartitionAny},
-		Key:            []byte(id),
-		Value:          []byte(data),
-	}, nil)
+
+	topicPartition := kafka.TopicPartition{
+		Topic:     &bp.topic,
+		Partition: kafka.PartitionAny,
+	}
+
+	bp.producer.Produce(
+		&kafka.Message{
+			TopicPartition: topicPartition,
+			Key:            []byte(id),
+			Value:          []byte(data),
+		},
+		nil,
+	)
 }
 
 func (bp *bookProducer) DeleteBook(bookId string, data string) {
