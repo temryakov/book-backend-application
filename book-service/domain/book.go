@@ -45,3 +45,7 @@ type BookUsecase interface {
 	UpdateBook(c context.Context, book *Book, BookID int) error
 	DeleteBook(c context.Context, BookID int) error
 }
+
+type BookProducer interface {
+	DeleteBook(c context.Context, BookID string)
+}

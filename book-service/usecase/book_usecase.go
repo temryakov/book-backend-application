@@ -5,17 +5,21 @@ import (
 	"time"
 
 	"book-service/domain"
+
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
 type bookUsecase struct {
 	bookRepository domain.BookRepository
 	contextTimeout time.Duration
+	producer       *kafka.Producer
 }
 
-func NewBookUsecase(bookRepository domain.BookRepository, timeout time.Duration) domain.BookUsecase {
+func NewBookUsecase(bookRepository domain.BookRepository, producer *kafka.Producer, timeout time.Duration) domain.BookUsecase {
 	return &bookUsecase{
 		bookRepository: bookRepository,
 		contextTimeout: timeout,
+		producer:       producer,
 	}
 }
 
