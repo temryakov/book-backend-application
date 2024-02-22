@@ -47,5 +47,5 @@ type BookUsecase interface {
 }
 
 type BookProducer interface {
-	DeleteBook(bookId string, data string)
+	DeleteBook(bookId int)
 }

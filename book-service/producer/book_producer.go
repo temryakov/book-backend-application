@@ -2,6 +2,7 @@ package prod
 
 import (
 	"book-service/domain"
+	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
@@ -18,7 +19,9 @@ func NewBookProducer(producer *kafka.Producer) domain.BookProducer {
 	}
 }
 
-func (bp *bookProducer) WriteMessage(id string, data string) {
+func (bp *bookProducer) WriteMessage(bookId int, data string) {
+
+	id := strconv.Itoa(bookId)
 
 	topicPartition := kafka.TopicPartition{
 		Topic:     &bp.topic,
@@ -35,6 +38,8 @@ func (bp *bookProducer) WriteMessage(id string, data string) {
 	)
 }
 
-func (bp *bookProducer) DeleteBook(bookId string, data string) {
+func (bp *bookProducer) DeleteBook(bookId int) {
+
+	data := "DELETE"
 	bp.WriteMessage(bookId, data)
 }
