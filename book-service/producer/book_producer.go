@@ -1,4 +1,4 @@
-package kafka
+package prod
 
 import (
 	"book-service/domain"

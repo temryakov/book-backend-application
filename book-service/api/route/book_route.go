@@ -5,6 +5,7 @@ import (
 
 	"book-service/api/controller"
 	"book-service/bootstrap"
+	prod "book-service/producer"
 	"book-service/repository"
 	"book-service/usecase"
 
@@ -16,7 +17,7 @@ import (
 func NewBookRouter(cfg *bootstrap.Config, db *gorm.DB, p *kafka.Producer, timeout time.Duration, group *gin.RouterGroup) {
 
 	br := repository.NewBookRepository(db)
-	bp := producer.NewBookProducer(p)
+	bp := prod.NewBookProducer(p)
 	bc := &controller.BookController{
 		BookUsecase: usecase.NewBookUsecase(br, bp, timeout),
 	}
