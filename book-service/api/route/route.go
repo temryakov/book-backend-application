@@ -5,11 +5,12 @@ import (
 
 	"book-service/bootstrap"
 
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-func Setup(config *bootstrap.Config, db *gorm.DB, timeout time.Duration, gin *gin.Engine) {
+func Setup(config *bootstrap.Config, db *gorm.DB, producer *kafka.Producer, timeout time.Duration, gin *gin.Engine) {
 	publicRouter := gin.Group("/api/book")
-	NewBookRouter(config, db, timeout, publicRouter)
+	NewBookRouter(config, db, producer, timeout, publicRouter)
 }
