@@ -14,15 +14,15 @@ import (
 
 func NewBookRouter(cfg *bootstrap.Config, db *gorm.DB, timeout time.Duration, group *gin.RouterGroup) {
 
-	sr := repository.NewBookRepository(db)
-	sc := &controller.BookController{
-		BookUsecase: usecase.NewBookUsecase(sr, timeout),
+	br := repository.NewBookRepository(db)
+	bc := &controller.BookController{
+		BookUsecase: usecase.NewBookUsecase(br, timeout),
 	}
 
-	group.GET("/:id", sc.FetchByID)
-	group.GET("/all", sc.Fetch)
-	group.POST("/", sc.Create)
-	group.DELETE("/:id", sc.Delete)
-	group.PATCH("/:id", sc.Update)
+	group.GET("/:id", bc.FetchByID)
+	group.GET("/all", bc.Fetch)
+	group.POST("/", bc.Create)
+	group.DELETE("/:id", bc.Delete)
+	group.PATCH("/:id", bc.Update)
 
 }
