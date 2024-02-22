@@ -2,6 +2,7 @@ package prod
 
 import (
 	"book-service/domain"
+	"log"
 	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -18,16 +19,13 @@ func NewBookProducer(producer *kafka.Producer) domain.BookProducer {
 		topic:    "books",
 	}
 }
-
 func (bp *bookProducer) WriteMessage(bookId int, data string) {
-
 	id := strconv.Itoa(bookId)
-
 	topicPartition := kafka.TopicPartition{
 		Topic:     &bp.topic,
 		Partition: kafka.PartitionAny,
 	}
-
+	log.Println("Processing to create event with bookId:", bookId, data)
 	bp.producer.Produce(
 		&kafka.Message{
 			TopicPartition: topicPartition,
@@ -37,9 +35,7 @@ func (bp *bookProducer) WriteMessage(bookId int, data string) {
 		nil,
 	)
 }
-
 func (bp *bookProducer) DeleteBook(bookId int) {
-
 	data := "DELETE"
 	bp.WriteMessage(bookId, data)
 }
