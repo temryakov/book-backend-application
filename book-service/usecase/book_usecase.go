@@ -11,15 +11,14 @@ import (
 
 type bookUsecase struct {
 	bookRepository domain.BookRepository
+	bookProducer   domain.BookProducer
 	contextTimeout time.Duration
-	producer       *kafka.Producer
 }
 
 func NewBookUsecase(bookRepository domain.BookRepository, producer *kafka.Producer, timeout time.Duration) domain.BookUsecase {
 	return &bookUsecase{
 		bookRepository: bookRepository,
 		contextTimeout: timeout,
-		producer:       producer,
 	}
 }
 
@@ -53,5 +52,11 @@ func (bu *bookUsecase) UpdateBook(c context.Context, book *domain.Book, bookId i
 func (su *bookUsecase) DeleteBook(c context.Context, bookId int) error {
 	ctx, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.bookRepository.DeleteBook(ctx, bookId)
+
+	err := su.bookRepository.DeleteBook(ctx, bookId)
+	if err != nil {
+		return err
+	}
+	su.bookProducer.DeleteBook(bookId)
+	return nil
 }
