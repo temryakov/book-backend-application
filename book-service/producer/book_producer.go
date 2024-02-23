@@ -5,35 +5,30 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"github.com/IBM/sarama"
 )
 
 type bookProducer struct {
-	producer *kafka.Producer
+	producer sarama.SyncProducer
 	topic    string
 }
 
-func NewBookProducer(producer *kafka.Producer) domain.BookProducer {
+func NewBookProducer(producer sarama.SyncProducer) domain.BookProducer {
 	return &bookProducer{
 		producer: producer,
 		topic:    "books",
 	}
 }
-func (bp *bookProducer) WriteMessage(bookId int, data string) {
-	id := strconv.Itoa(bookId)
-	topicPartition := kafka.TopicPartition{
-		Topic:     &bp.topic,
-		Partition: kafka.PartitionAny,
+func (bp *bookProducer) WriteMessage(bookId int, data string) error {
+	msg := &sarama.ProducerMessage{
+		Topic: bp.topic,
+		Key:   sarama.StringEncoder(strconv.Itoa(bookId)),
+		Value: sarama.StringEncoder(data),
 	}
-	log.Println("Processing to create event with bookId:", bookId, data)
-	bp.producer.Produce(
-		&kafka.Message{
-			TopicPartition: topicPartition,
-			Key:            []byte(id),
-			Value:          []byte(data),
-		},
-		nil,
-	)
+
+	p, offset, err := bp.producer.SendMessage(msg)
+	log.Println("Partition: %w, offset: %w", p, offset)
+	return err
 }
 func (bp *bookProducer) DeleteBook(bookId int) {
 	data := "DELETE"
