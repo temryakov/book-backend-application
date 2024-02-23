@@ -8,13 +8,14 @@ import (
 )
 
 type Config struct {
-	ContextTimeout int    `mapstructure:"CONTEXT_TIMEOUT"`
-	DBHost         string `mapstructure:"POSTGRES_HOST"`
-	DBPort         string `mapstructure:"POSTGRES_PORT"`
-	DBUser         string `mapstructure:"POSTGRES_USER"`
-	DBPassword     string `mapstructure:"POSTGRES_PASSWORD"`
-	DBName         string `mapstructure:"POSTGRES_DB"`
-	ServerPort     string `mapstructure:"SERVER_PORT"`
+	ContextTimeout     int    `mapstructure:"CONTEXT_TIMEOUT"`
+	DBHost             string `mapstructure:"POSTGRES_HOST"`
+	DBPort             string `mapstructure:"POSTGRES_PORT"`
+	DBUser             string `mapstructure:"POSTGRES_USER"`
+	DBPassword         string `mapstructure:"POSTGRES_PASSWORD"`
+	DBName             string `mapstructure:"POSTGRES_DB"`
+	ServerPort         string `mapstructure:"SERVER_PORT"`
+	KafkaServerAddress string `mapstructure:"KAFKA_SERVER_ADDRESS"`
 }
 
 var (
