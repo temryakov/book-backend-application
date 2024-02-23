@@ -15,6 +15,10 @@ func main() {
 	/* Enviroment variables initializing */
 	config := app.Config
 
+	/* Kafka Producer initializing */
+	producer := app.Producer
+	defer producer.Close()
+
 	/* Database connecting initializing */
 	db := app.DB
 
